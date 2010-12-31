@@ -15,14 +15,18 @@
  * See the License for the specific language governing permissions and limitations
  * under the License.
  */
-package com.mebigfatguy.junitflood.generator;
+package com.mebigfatguy.junitflood.generator.simple;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.objectweb.asm.ClassReader;
+
 import com.mebigfatguy.junitflood.Configuration;
 import com.mebigfatguy.junitflood.classpath.ClassPathItem;
 import com.mebigfatguy.junitflood.classpath.ClassPathIterator;
+import com.mebigfatguy.junitflood.generator.GeneratorException;
+import com.mebigfatguy.junitflood.generator.JUnitGenerator;
 import com.mebigfatguy.junitflood.util.Closer;
 
 public class SimpleGenerator implements JUnitGenerator {
@@ -43,6 +47,9 @@ public class SimpleGenerator implements JUnitGenerator {
 				InputStream is = null;
 				try {
 					is = item.getInputStream();
+					ClassReader cr = new ClassReader(is);
+					SimpleClassVisitor scv = new SimpleClassVisitor();
+					cr.accept(scv, ClassReader.SKIP_DEBUG);
 				} finally {
 					Closer.closeQuietly(is);
 				}
