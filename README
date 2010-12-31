@@ -1,0 +1,6 @@
+A tool for automatically creating junit tests through class file byte code inspection.
+
+	Tool will use ASM to inspect byte code, and generate unit tests for classes found
+		Will find conditional cases in byte code to build tests
+		Will use a rules file for determining how to create concrete classes, etc.
+		Will generate unit tests within a sandbox to avoid bad things from happening
