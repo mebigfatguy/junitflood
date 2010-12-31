@@ -17,35 +17,54 @@
  */
 package com.mebigfatguy.junitflood.generator.simple;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mebigfatguy.junitflood.Configuration;
+import com.mebigfatguy.junitflood.util.Closer;
 
 
 public class SimpleClassVisitor implements ClassVisitor {
 
+	private static final  Logger logger = LoggerFactory.getLogger(SimpleClassVisitor.class);
+
 	private final Configuration configuration;
-	private String clsName;
-	private File testFile;
+	private PrintWriter writer;
 
 
 	public SimpleClassVisitor(Configuration config) {
 		configuration = config;
-		testFile = null;
+		writer = null;
 	}
 
 	@Override
 	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-		clsName = name;
-		testFile = new File(configuration.getOutputDirectory(), clsName.replaceAll("\\.", "/") + ".java");
-		if (testFile.exists()) {
-			testFile = null;
+		try {
+			File testFile = new File(configuration.getOutputDirectory(), name + "Test.java");
+			if (!testFile.exists()) {
+				testFile.getParentFile().mkdirs();
+				writer = new PrintWriter(new BufferedWriter(new FileWriter(testFile)));
+				int slashPos = name.lastIndexOf("/");
+				if (slashPos >= 0) {
+					String packageName = name.substring(0, slashPos).replaceAll("/", ".");
+					writer.println("package " + packageName + ";");
+				}
+			} else {
+				logger.warn("Class " + name + " was skipped as it already has a unit test: " + testFile);
+			}
+		} catch (IOException ioe) {
+			writer = null;
 		}
 	}
 
@@ -60,6 +79,9 @@ public class SimpleClassVisitor implements ClassVisitor {
 
 	@Override
 	public void visitEnd() {
+		if (writer != null) {
+			Closer.closeQuietly(writer);
+		}
 	}
 
 	@Override
