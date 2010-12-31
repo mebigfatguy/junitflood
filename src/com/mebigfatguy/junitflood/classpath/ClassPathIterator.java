@@ -50,12 +50,14 @@ public class ClassPathIterator implements Iterator<ClassPathItem> {
 				}
 			}
 
+			currentFile = null;
+
 			if (subIterator.hasNext()) {
 				return true;
 			}
 
 			subIterator = null;
-			currentFile = null;
+
 		}
 
 		return false;
