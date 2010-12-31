@@ -17,17 +17,36 @@
  */
 package com.mebigfatguy.junitflood.generator.simple;
 
+import java.io.File;
+
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 
+import com.mebigfatguy.junitflood.Configuration;
+
 
 public class SimpleClassVisitor implements ClassVisitor {
 
+	private final Configuration configuration;
+	private String clsName;
+	private File testFile;
+
+
+	public SimpleClassVisitor(Configuration config) {
+		configuration = config;
+		testFile = null;
+	}
+
 	@Override
 	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+		clsName = name;
+		testFile = new File(configuration.getOutputDirectory(), clsName.replaceAll("\\.", "/") + ".java");
+		if (testFile.exists()) {
+			testFile = null;
+		}
 	}
 
 	@Override

@@ -48,7 +48,7 @@ public class SimpleGenerator implements JUnitGenerator {
 				try {
 					is = item.getInputStream();
 					ClassReader cr = new ClassReader(is);
-					SimpleClassVisitor scv = new SimpleClassVisitor();
+					SimpleClassVisitor scv = new SimpleClassVisitor(configuration);
 					cr.accept(scv, ClassReader.SKIP_DEBUG);
 				} finally {
 					Closer.closeQuietly(is);
