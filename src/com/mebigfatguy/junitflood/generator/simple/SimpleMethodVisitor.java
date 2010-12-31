@@ -17,6 +17,7 @@
  */
 package com.mebigfatguy.junitflood.generator.simple;
 
+import java.io.StringWriter;
 import java.util.List;
 
 import org.objectweb.asm.AnnotationVisitor;
@@ -30,10 +31,14 @@ public class SimpleMethodVisitor implements MethodVisitor {
 
 	private final Configuration configuration;
 	private final List<String> methodBodies;
+	private final List<String> ctorSignatures;
+	private final StringWriter methodWriter;
 
-	public SimpleMethodVisitor(Configuration config, List<String> bodies) {
+	public SimpleMethodVisitor(Configuration config, List<String> bodies, List<String> signatures) {
 		configuration = config;
 		methodBodies = bodies;
+		ctorSignatures = signatures;
+		methodWriter = new StringWriter();
 	}
 
 	@Override
@@ -56,6 +61,8 @@ public class SimpleMethodVisitor implements MethodVisitor {
 
 	@Override
 	public void visitEnd() {
+		methodWriter.flush();
+		methodBodies.add(methodWriter.toString());
 	}
 
 	@Override
