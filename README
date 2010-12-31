@@ -4,3 +4,10 @@ A tool for automatically creating junit tests through class file byte code inspe
 		Will find conditional cases in byte code to build tests
 		Will use a rules file for determining how to create concrete classes, etc.
 		Will generate unit tests within a sandbox to avoid bad things from happening
+
+
+Tool uses ant to build, just run 
+
+ant
+
+to build.
