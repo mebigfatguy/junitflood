@@ -22,6 +22,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
@@ -41,6 +43,7 @@ public class SimpleClassVisitor implements ClassVisitor {
 
 	private final Configuration configuration;
 	private PrintWriter writer;
+	private List<String> methodBodies;
 
 
 	public SimpleClassVisitor(Configuration config) {
@@ -60,6 +63,7 @@ public class SimpleClassVisitor implements ClassVisitor {
 					String packageName = name.substring(0, slashPos).replaceAll("/", ".");
 					writer.println("package " + packageName + ";");
 				}
+				methodBodies = new ArrayList<String>();
 			} else {
 				logger.warn("Class " + name + " was skipped as it already has a unit test: " + testFile);
 			}
@@ -95,6 +99,10 @@ public class SimpleClassVisitor implements ClassVisitor {
 
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+		if (writer != null) {
+			return new SimpleMethodVisitor(configuration, methodBodies);
+		}
+
 		return null;
 	}
 
