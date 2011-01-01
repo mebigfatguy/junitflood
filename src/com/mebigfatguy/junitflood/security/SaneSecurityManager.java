@@ -29,7 +29,7 @@ public class SaneSecurityManager extends SecurityManager {
 	}
 
 	@Override
-	protected Class[] getClassContext() {
+	protected Class<?>[] getClassContext() {
 		return super.getClassContext();
 	}
 
