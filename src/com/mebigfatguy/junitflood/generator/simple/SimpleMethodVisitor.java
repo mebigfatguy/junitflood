@@ -17,6 +17,7 @@
  */
 package com.mebigfatguy.junitflood.generator.simple;
 
+import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Set;
@@ -34,14 +35,18 @@ public class SimpleMethodVisitor implements MethodVisitor {
 	private final Configuration configuration;
 	private final List<String> methodBodies;
 	private final Set<String> ctors;
-	private final StringWriter methodWriter;
+	private final StringWriter stringWriter;
+	private final PrintWriter writer;
 
-	public SimpleMethodVisitor(Configuration config, String clsName, List<String> bodies) {
+	public SimpleMethodVisitor(Configuration config, String clsName, String methodName, List<String> bodies) {
 		configuration = config;
 		methodBodies = bodies;
-		methodWriter = new StringWriter();
+		stringWriter = new StringWriter();
+		writer = new PrintWriter(stringWriter);
 		ClassLookup lookup = config.getRepository();
 		ctors = lookup.getConstructors(clsName, clsName);
+
+		writer.println("\tpublic void test" + upperFirst(methodName) + "() throws Exception {");
 	}
 
 	@Override
@@ -64,8 +69,9 @@ public class SimpleMethodVisitor implements MethodVisitor {
 
 	@Override
 	public void visitEnd() {
-		methodWriter.flush();
-		methodBodies.add(methodWriter.toString());
+		writer.println("\t}");
+		writer.flush();
+		methodBodies.add(stringWriter.toString());
 	}
 
 	@Override
@@ -143,6 +149,10 @@ public class SimpleMethodVisitor implements MethodVisitor {
 
 	@Override
 	public void visitVarInsn(int opcode, int var) {
+	}
+
+	private String upperFirst(String name) {
+		return Character.toUpperCase(name.charAt(0)) + name.substring(1);
 	}
 
 }

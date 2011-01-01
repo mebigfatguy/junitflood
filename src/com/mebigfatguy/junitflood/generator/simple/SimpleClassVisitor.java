@@ -30,6 +30,7 @@ import org.objectweb.asm.Attribute;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,8 +81,29 @@ public class SimpleClassVisitor implements ClassVisitor {
 				int slashPos = className.lastIndexOf('/');
 				if (slashPos >= 0) {
 					String packageName = className.substring(0, slashPos).replaceAll("/", ".");
+
 					writer.println("package " + packageName + ";");
 				}
+
+				writer.println();
+				writer.println("import org.junit.Test;");
+				writer.println();
+				String simpleClassName;
+				if (slashPos >= 0) {
+					simpleClassName = className.substring(slashPos+1);
+				} else {
+					simpleClassName = className;
+				}
+
+				writer.println("public class " + simpleClassName + "Test {");
+				writer.println();
+
+				for (String methodBody : methodBodies) {
+					writer.println("\t@Test");
+					writer.println(methodBody);
+					writer.println();
+				}
+				writer.println("}");
 			} catch (IOException ioe) {
 				logger.error("Failed opening file to create test file: " + testFile, ioe);
 			} finally {
@@ -102,8 +124,8 @@ public class SimpleClassVisitor implements ClassVisitor {
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 		if (testFile != null) {
-			if (!"<clinit>".equals(name) && !"<init>".equals(name)) {
-				return new SimpleMethodVisitor(configuration, className, methodBodies);
+			if ((access != Opcodes.ACC_PRIVATE) && (access != Opcodes.ACC_SYNTHETIC) && !"<clinit>".equals(name) && !"<init>".equals(name)) {
+				return new SimpleMethodVisitor(configuration, className, name, methodBodies);
 			}
 		}
 
