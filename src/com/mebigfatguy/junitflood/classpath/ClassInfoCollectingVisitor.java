@@ -66,7 +66,9 @@ public class ClassInfoCollectingVisitor implements ClassVisitor {
 	@Override
 	public void visitEnd() {
 		Map<String, Access> clsConstructors = clsInfo.get(LookupType.CONSTRUCTOR);
-		if (clsConstructors.isEmpty()) {
+		if (clsConstructors == null) {
+			clsConstructors = new HashMap<String, Access>();
+			clsInfo.put(LookupType.CONSTRUCTOR, clsConstructors);
 			clsConstructors.put("()V", Access.PUBLIC);
 		}
 	}

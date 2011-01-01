@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -49,14 +51,19 @@ public class ClassLookup {
 		roots.addAll(config.getScanClassPath());
 		roots.addAll(config.getAuxClassPath());
 
-		URL[] urls = new URL[roots.size()];
+		final URL[] urls = new URL[roots.size()];
 
 		int i = 0;
 		for (File root : roots) {
 			urls[i++] = new URL("file://" + root.getAbsolutePath());
 		}
 
-		classLoader = new URLClassLoader(urls);
+		classLoader = AccessController.<URLClassLoader>doPrivileged(new PrivilegedAction<URLClassLoader>() {
+			@Override
+			public URLClassLoader run() {
+				return new URLClassLoader(urls);
+			}
+		});
 	}
 
 	public Set<String> getConstructors(String clsName, String fromClass) {
