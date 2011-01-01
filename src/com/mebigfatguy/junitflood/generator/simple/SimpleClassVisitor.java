@@ -125,7 +125,7 @@ public class SimpleClassVisitor implements ClassVisitor {
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 		if (testFile != null) {
 			if ((access != Opcodes.ACC_PRIVATE) && (access != Opcodes.ACC_SYNTHETIC) && !"<clinit>".equals(name) && !"<init>".equals(name)) {
-				return new SimpleMethodVisitor(configuration, className, name, methodBodies);
+				return new SimpleMethodVisitor(configuration, className, name, desc, methodBodies);
 			}
 		}
 

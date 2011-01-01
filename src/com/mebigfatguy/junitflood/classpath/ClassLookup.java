@@ -43,22 +43,27 @@ public class ClassLookup {
 
 	private static final  Logger logger = LoggerFactory.getLogger(ClassLookup.class);
 
-	private final URLClassLoader classLoader;
+	private final ClassLoader classLoader;
 	private final Map<String, Map<LookupType, Map<String, Access>>> classDetails = new HashMap<String, Map<LookupType, Map<String, Access>>>();
+	private final URL[] urls;
 
 	public ClassLookup(Configuration config) throws MalformedURLException {
 		Set<File> roots = new HashSet<File>();
 		roots.addAll(config.getScanClassPath());
 		roots.addAll(config.getAuxClassPath());
 
-		final URL[] urls = new URL[roots.size()];
+		urls = new URL[roots.size()];
 
 		int i = 0;
 		for (File root : roots) {
 			urls[i++] = new URL("file://" + root.getAbsolutePath());
 		}
 
-		classLoader = AccessController.<URLClassLoader>doPrivileged(new PrivilegedAction<URLClassLoader>() {
+		classLoader = createClassLoader();
+	}
+
+	public ClassLoader createClassLoader() {
+		return AccessController.<URLClassLoader>doPrivileged(new PrivilegedAction<URLClassLoader>() {
 			@Override
 			public URLClassLoader run() {
 				return new URLClassLoader(urls);

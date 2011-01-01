@@ -29,16 +29,18 @@ import org.objectweb.asm.MethodVisitor;
 
 import com.mebigfatguy.junitflood.Configuration;
 import com.mebigfatguy.junitflood.classpath.ClassLookup;
+import com.mebigfatguy.junitflood.evaluator.Evaluator;
 
 public class SimpleMethodVisitor implements MethodVisitor {
 
 	private final Configuration configuration;
 	private final List<String> methodBodies;
 	private final Set<String> ctors;
+	private final Evaluator evaluator;
 	private final StringWriter stringWriter;
 	private final PrintWriter writer;
 
-	public SimpleMethodVisitor(Configuration config, String clsName, String methodName, List<String> bodies) {
+	public SimpleMethodVisitor(Configuration config, String clsName, String methodName, String desc, List<String> bodies) {
 		configuration = config;
 		methodBodies = bodies;
 		stringWriter = new StringWriter();
@@ -47,6 +49,10 @@ public class SimpleMethodVisitor implements MethodVisitor {
 		ctors = lookup.getConstructors(clsName, clsName);
 
 		writer.println("\tpublic void test" + upperFirst(methodName) + "() throws Exception {");
+
+		//temporary -- figure out where this goes later
+		evaluator = new Evaluator(config);
+		evaluator.attemptExecution(clsName, methodName, desc);
 	}
 
 	@Override

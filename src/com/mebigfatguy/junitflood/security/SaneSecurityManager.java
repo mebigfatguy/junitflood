@@ -20,8 +20,15 @@ package com.mebigfatguy.junitflood.security;
 import java.io.FileDescriptor;
 import java.net.InetAddress;
 import java.security.Permission;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SaneSecurityManager extends SecurityManager {
+
+	private static final Set<String> SANE_PERMISSIONS = new HashSet<String>();
+	static {
+		SANE_PERMISSIONS.add("getProperty.package.access");
+	}
 
 	@Override
 	public boolean getInCheck() {
@@ -70,12 +77,16 @@ public class SaneSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkPermission(Permission perm) {
-		super.checkPermission(perm);
+		if (!SANE_PERMISSIONS.contains(perm.getName())) {
+			super.checkPermission(perm);
+		}
 	}
 
 	@Override
 	public void checkPermission(Permission perm, Object context) {
-		super.checkPermission(perm, context);
+		if (!SANE_PERMISSIONS.contains(perm.getName())) {
+			super.checkPermission(perm, context);
+		}
 	}
 
 	@Override
@@ -186,27 +197,22 @@ public class SaneSecurityManager extends SecurityManager {
 
 	@Override
 	public void checkAwtEventQueueAccess() {
-		super.checkAwtEventQueueAccess();
 	}
 
 	@Override
 	public void checkPackageAccess(String pkg) {
-		super.checkPackageAccess(pkg);
 	}
 
 	@Override
 	public void checkPackageDefinition(String pkg) {
-		super.checkPackageDefinition(pkg);
 	}
 
 	@Override
 	public void checkSetFactory() {
-		super.checkSetFactory();
 	}
 
 	@Override
 	public void checkMemberAccess(Class<?> clazz, int which) {
-		super.checkMemberAccess(clazz, which);
 	}
 
 	@Override
