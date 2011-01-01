@@ -40,14 +40,11 @@ public class SecurityManagerFactory extends SecurityManager {
 
 	@Override
 	public boolean getInCheck() {
-		if (delegatedSecurityManager != null) {
-			return delegatedSecurityManager.getInCheck();
-		}
-		return false;
+		return super.getInCheck();
 	}
 
 	@Override
-	protected Class[] getClassContext() {
+	protected Class<?>[] getClassContext() {
 		return super.getClassContext();
 	}
 
