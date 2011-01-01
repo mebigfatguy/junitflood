@@ -46,7 +46,6 @@ public class SimpleClassVisitor implements ClassVisitor {
 	private File testFile = null;
 	private List<String> methodBodies = null;
 
-
 	public SimpleClassVisitor(Configuration config) {
 		configuration = config;
 	}
@@ -104,7 +103,7 @@ public class SimpleClassVisitor implements ClassVisitor {
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
 		if (testFile != null) {
 			if (!"<clinit>".equals(name) && !"<init>".equals(name)) {
-				return new SimpleMethodVisitor(configuration, methodBodies);
+				return new SimpleMethodVisitor(configuration, className, methodBodies);
 			}
 		}
 

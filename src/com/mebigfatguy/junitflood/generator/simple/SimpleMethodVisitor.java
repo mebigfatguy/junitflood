@@ -19,6 +19,7 @@ package com.mebigfatguy.junitflood.generator.simple;
 
 import java.io.StringWriter;
 import java.util.List;
+import java.util.Set;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
@@ -26,17 +27,21 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import com.mebigfatguy.junitflood.Configuration;
+import com.mebigfatguy.junitflood.classpath.ClassLookup;
 
 public class SimpleMethodVisitor implements MethodVisitor {
 
 	private final Configuration configuration;
 	private final List<String> methodBodies;
+	private final Set<String> ctors;
 	private final StringWriter methodWriter;
 
-	public SimpleMethodVisitor(Configuration config, List<String> bodies) {
+	public SimpleMethodVisitor(Configuration config, String clsName, List<String> bodies) {
 		configuration = config;
 		methodBodies = bodies;
 		methodWriter = new StringWriter();
+		ClassLookup lookup = config.getRepository();
+		ctors = lookup.getConstructors(clsName, clsName);
 	}
 
 	@Override

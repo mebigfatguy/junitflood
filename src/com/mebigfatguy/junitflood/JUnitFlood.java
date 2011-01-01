@@ -18,6 +18,7 @@
 package com.mebigfatguy.junitflood;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,11 +49,13 @@ public class JUnitFlood {
 			CommandLine cmd = parser.parse( options, args);
 
 			Configuration configuration = getConfiguration(cmd);
+			configuration.initializeLookup();
 
 			JUnitGenerator generator = JUnitFloodFactory.getJUnitGenerator(configuration);
 			generator.generate();
 
-
+		} catch (MalformedURLException mue) {
+			logger.error("Invalid url in classpath",  mue);
 		} catch (MissingOptionException moe) {
 			logger.error("Failed parsing command line", moe);
 		} catch (ConfigurationException ce) {
