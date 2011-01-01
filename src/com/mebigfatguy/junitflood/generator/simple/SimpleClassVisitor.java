@@ -42,35 +42,23 @@ public class SimpleClassVisitor implements ClassVisitor {
 	private static final  Logger logger = LoggerFactory.getLogger(SimpleClassVisitor.class);
 
 	private final Configuration configuration;
-	private PrintWriter writer;
-	private List<String> methodBodies;
-	private List<String> ctorSignatures;
+	private String className = null;
+	private File testFile = null;
+	private List<String> methodBodies = null;
 
 
 	public SimpleClassVisitor(Configuration config) {
 		configuration = config;
-		writer = null;
 	}
 
 	@Override
 	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-		try {
-			File testFile = new File(configuration.getOutputDirectory(), name + "Test.java");
-			if (!testFile.exists()) {
-				testFile.getParentFile().mkdirs();
-				writer = new PrintWriter(new BufferedWriter(new FileWriter(testFile)));
-				int slashPos = name.lastIndexOf("/");
-				if (slashPos >= 0) {
-					String packageName = name.substring(0, slashPos).replaceAll("/", ".");
-					writer.println("package " + packageName + ";");
-				}
-				ctorSignatures = new ArrayList<String>();
-				methodBodies = new ArrayList<String>();
-			} else {
-				logger.warn("Class " + name + " was skipped as it already has a unit test: " + testFile);
-			}
-		} catch (IOException ioe) {
-			writer = null;
+		testFile = new File(configuration.getOutputDirectory(), name + "Test.java");
+		if (!testFile.exists()) {
+			className = name;
+			methodBodies = new ArrayList<String>();
+		} else {
+			logger.warn("Class " + name + " was skipped as it already has a unit test: " + testFile);
 		}
 	}
 
@@ -85,8 +73,21 @@ public class SimpleClassVisitor implements ClassVisitor {
 
 	@Override
 	public void visitEnd() {
-		if (writer != null) {
-			Closer.closeQuietly(writer);
+		if (methodBodies.size() > 0) {
+			testFile.getParentFile().mkdirs();
+			PrintWriter writer = null;
+			try {
+				writer = new PrintWriter(new BufferedWriter(new FileWriter(testFile)));
+				int slashPos = className.lastIndexOf("/");
+				if (slashPos >= 0) {
+					String packageName = className.substring(0, slashPos).replaceAll("/", ".");
+					writer.println("package " + packageName + ";");
+				}
+			} catch (IOException ioe) {
+				logger.error("Failed opening file to create test file: " + testFile, ioe);
+			} finally {
+				Closer.closeQuietly(writer);
+			}
 		}
 	}
 
@@ -101,11 +102,9 @@ public class SimpleClassVisitor implements ClassVisitor {
 
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-		if (writer != null) {
-			if ("<init>".equals(name)) {
-				ctorSignatures.add(desc);
-			} else if (!"<clinit>".equals(name)) {
-				return new SimpleMethodVisitor(configuration, methodBodies, ctorSignatures);
+		if (testFile != null) {
+			if (!"<clinit>".equals(name) && !"<init>".equals(name)) {
+				return new SimpleMethodVisitor(configuration, methodBodies);
 			}
 		}
 

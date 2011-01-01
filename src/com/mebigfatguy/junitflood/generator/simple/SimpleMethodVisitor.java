@@ -31,13 +31,11 @@ public class SimpleMethodVisitor implements MethodVisitor {
 
 	private final Configuration configuration;
 	private final List<String> methodBodies;
-	private final List<String> ctorSignatures;
 	private final StringWriter methodWriter;
 
-	public SimpleMethodVisitor(Configuration config, List<String> bodies, List<String> signatures) {
+	public SimpleMethodVisitor(Configuration config, List<String> bodies) {
 		configuration = config;
 		methodBodies = bodies;
-		ctorSignatures = signatures;
 		methodWriter = new StringWriter();
 	}
 
