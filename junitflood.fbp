@@ -1,0 +1,11 @@
+<Project projectName="JUnitFlood">
+  <Jar>./classes</Jar>
+  <AuxClasspathEntry>./lib/asm-3.3.1.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>./lib/commons-cli-1.2.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>./lib/slf4j-api-1.6.1.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>./lib/slf4j-simple-1.6.1.jar</AuxClasspathEntry>
+  <SrcDir>./src</SrcDir>
+  <SuppressionFilter>
+    <LastVersion value="-1" relOp="NEQ"/>
+  </SuppressionFilter>
+</Project>
