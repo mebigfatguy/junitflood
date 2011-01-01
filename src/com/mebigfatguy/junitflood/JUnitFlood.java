@@ -35,6 +35,7 @@ import org.slf4j.LoggerFactory;
 import com.mebigfatguy.junitflood.factory.JUnitFloodFactory;
 import com.mebigfatguy.junitflood.generator.GeneratorException;
 import com.mebigfatguy.junitflood.generator.JUnitGenerator;
+import com.mebigfatguy.junitflood.security.SecurityManagerFactory;
 
 public class JUnitFlood {
 
@@ -42,7 +43,7 @@ public class JUnitFlood {
 
 	public static void main(String[] args) {
 		try {
-
+			SecurityManagerFactory.initialize();
 			Options options = createOptions();
 
 			CommandLineParser parser = new GnuParser();
