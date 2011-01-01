@@ -45,7 +45,7 @@ public class DirectoryIterator implements Iterator<ClassPathItem> {
 
 	@Override
 	public ClassPathItem next() {
-		if (directories.size() == 0) {
+		if (directories.isEmpty()) {
 			throw new NoSuchElementException();
 		}
 
@@ -53,7 +53,7 @@ public class DirectoryIterator implements Iterator<ClassPathItem> {
 		while (f.isDirectory()) {
 			File[] items = f.listFiles(new ClassFileFilter());
 			directories.addAll(Arrays.asList(items));
-			if (directories.size() == 0) {
+			if (directories.isEmpty()) {
 				throw new NoSuchElementException("No more elements in " + directory);
 			}
 			f = directories.remove(0);
@@ -71,7 +71,7 @@ public class DirectoryIterator implements Iterator<ClassPathItem> {
 		throw new UnsupportedOperationException("JarIterator doesn't support remove");
 	}
 
-	private class ClassFileFilter implements FileFilter {
+	private static class ClassFileFilter implements FileFilter {
 
 		@Override
 		public boolean accept(File f) {

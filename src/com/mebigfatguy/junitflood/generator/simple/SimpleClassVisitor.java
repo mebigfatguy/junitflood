@@ -77,7 +77,7 @@ public class SimpleClassVisitor implements ClassVisitor {
 			PrintWriter writer = null;
 			try {
 				writer = new PrintWriter(new BufferedWriter(new FileWriter(testFile)));
-				int slashPos = className.lastIndexOf("/");
+				int slashPos = className.lastIndexOf('/');
 				if (slashPos >= 0) {
 					String packageName = className.substring(0, slashPos).replaceAll("/", ".");
 					writer.println("package " + packageName + ";");
