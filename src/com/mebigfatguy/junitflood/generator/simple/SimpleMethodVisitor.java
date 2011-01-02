@@ -172,8 +172,8 @@ public class SimpleMethodVisitor implements MethodVisitor {
 	}
 
 	private void buildInitialParameterExpectations(String desc, boolean isStatic) {
-		int parmNum = isStatic ? 0 : 1;
 		if (!desc.startsWith("()")) {
+			int parmNum = isStatic ? 0 : 1;
 			String[] parmSigs = SignatureUtils.splitMethodParameterSignatures(desc);
 			for (String parmSig : parmSigs) {
 				Set<Expectation> parmExpectations = new HashSet<Expectation>();
