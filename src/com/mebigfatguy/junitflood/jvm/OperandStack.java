@@ -398,49 +398,214 @@ public class OperandStack {
 			case Opcodes.LXOR:
 			break;
 
-			case Opcodes.I2L:
+			case Opcodes.I2L: {
+				Operand lop = new Operand();
+				lop.setStaticSignature("J");
+				if (!stack.isEmpty()) {
+					Operand op = stack.remove(stack.size() - 1);
+					Object o = op.getConstant();
+					if (o != null) {
+						lop.setConstant(Long.valueOf((Integer) o));
+					}
+				}
+				stack.add(lop);
+			}
 			break;
 
-			case Opcodes.I2F:
+			case Opcodes.I2F: {
+				Operand fop = new Operand();
+				fop.setStaticSignature("F");
+				if (!stack.isEmpty()) {
+					Operand op = stack.remove(stack.size() - 1);
+					Object o = op.getConstant();
+					if (o != null) {
+						fop.setConstant(Float.valueOf((Integer) o));
+					}
+				}
+				stack.add(fop);
+			}
 			break;
 
-			case Opcodes.I2D:
+			case Opcodes.I2D: {
+				Operand dop = new Operand();
+				dop.setStaticSignature("D");
+				if (!stack.isEmpty()) {
+					Operand op = stack.remove(stack.size() - 1);
+					Object o = op.getConstant();
+					if (o != null) {
+						dop.setConstant(Double.valueOf((Integer) o));
+					}
+				}
+				stack.add(dop);
+			}
 			break;
 
-			case Opcodes.L2I:
+			case Opcodes.L2I: {
+				Operand iop = new Operand();
+				iop.setStaticSignature("I");
+				if (!stack.isEmpty()) {
+					Operand op = stack.remove(stack.size() - 1);
+					Object o = op.getConstant();
+					if (o != null) {
+						iop.setConstant(((Long) o).intValue());
+					}
+				}
+				stack.add(iop);
+			}
 			break;
 
-			case Opcodes.L2F:
+			case Opcodes.L2F: {
+				Operand fop = new Operand();
+				fop.setStaticSignature("F");
+				if (!stack.isEmpty()) {
+					Operand op = stack.remove(stack.size() - 1);
+					Object o = op.getConstant();
+					if (o != null) {
+						fop.setConstant(((Long) o).floatValue());
+					}
+				}
+				stack.add(fop);
+			}
 			break;
 
-			case Opcodes.L2D:
+			case Opcodes.L2D: {
+				Operand dop = new Operand();
+				dop.setStaticSignature("D");
+				if (!stack.isEmpty()) {
+					Operand op = stack.remove(stack.size() - 1);
+					Object o = op.getConstant();
+					if (o != null) {
+						dop.setConstant(((Long) o).doubleValue());
+					}
+				}
+				stack.add(dop);
+			}
 			break;
 
-			case Opcodes.F2I:
+			case Opcodes.F2I: {
+				Operand iop = new Operand();
+				iop.setStaticSignature("I");
+				if (!stack.isEmpty()) {
+					Operand op = stack.remove(stack.size() - 1);
+					Object o = op.getConstant();
+					if (o != null) {
+						iop.setConstant(((Float) o).intValue());
+					}
+				}
+				stack.add(iop);
+			}
 			break;
 
-			case Opcodes.F2L:
+			case Opcodes.F2L: {
+				Operand lop = new Operand();
+				lop.setStaticSignature("J");
+				if (!stack.isEmpty()) {
+					Operand op = stack.remove(stack.size() - 1);
+					Object o = op.getConstant();
+					if (o != null) {
+						lop.setConstant(((Float) o).longValue());
+					}
+				}
+				stack.add(lop);
+			}
 			break;
 
-			case Opcodes.F2D:
+			case Opcodes.F2D: {
+				Operand dop = new Operand();
+				dop.setStaticSignature("D");
+				if (!stack.isEmpty()) {
+					Operand op = stack.remove(stack.size() - 1);
+					Object o = op.getConstant();
+					if (o != null) {
+						dop.setConstant(((Float) o).doubleValue());
+					}
+				}
+				stack.add(dop);
+			}
 			break;
 
-			case Opcodes.D2I:
+			case Opcodes.D2I: {
+				Operand iop = new Operand();
+				iop.setStaticSignature("I");
+				if (!stack.isEmpty()) {
+					Operand op = stack.remove(stack.size() - 1);
+					Object o = op.getConstant();
+					if (o != null) {
+						iop.setConstant(((Double) o).intValue());
+					}
+				}
+				stack.add(iop);
+			}
 			break;
 
-			case Opcodes.D2L:
+			case Opcodes.D2L: {
+				Operand lop = new Operand();
+				lop.setStaticSignature("J");
+				if (!stack.isEmpty()) {
+					Operand op = stack.remove(stack.size() - 1);
+					Object o = op.getConstant();
+					if (o != null) {
+						lop.setConstant(((Double) o).longValue());
+					}
+				}
+				stack.add(lop);
+			}
 			break;
 
-			case Opcodes.D2F:
+			case Opcodes.D2F: {
+				Operand fop = new Operand();
+				fop.setStaticSignature("F");
+				if (!stack.isEmpty()) {
+					Operand op = stack.remove(stack.size() - 1);
+					Object o = op.getConstant();
+					if (o != null) {
+						fop.setConstant(((Double) o).floatValue());
+					}
+				}
+				stack.add(fop);
+			}
 			break;
 
-			case Opcodes.I2B:
+			case Opcodes.I2B: {
+				Operand bop = new Operand();
+				bop.setStaticSignature("B");
+				if (!stack.isEmpty()) {
+					Operand op = stack.remove(stack.size() - 1);
+					Object o = op.getConstant();
+					if (o != null) {
+						bop.setConstant(((Integer) o).byteValue());
+					}
+				}
+				stack.add(bop);
+			}
 			break;
 
-			case Opcodes.I2C:
+			case Opcodes.I2C: {
+				Operand cop = new Operand();
+				cop.setStaticSignature("C");
+				if (!stack.isEmpty()) {
+					Operand op = stack.remove(stack.size() - 1);
+					Object o = op.getConstant();
+					if (o != null) {
+						cop.setConstant(Character.valueOf((char)((Integer) o).intValue()));
+					}
+				}
+				stack.add(cop);
+			}
 			break;
 
-			case Opcodes.I2S:
+			case Opcodes.I2S: {
+				Operand sop = new Operand();
+				sop.setStaticSignature("S");
+				if (!stack.isEmpty()) {
+					Operand op = stack.remove(stack.size() - 1);
+					Object o = op.getConstant();
+					if (o != null) {
+						sop.setConstant(Short.valueOf((short)((Integer) o).intValue()));
+					}
+				}
+				stack.add(sop);
+			}
 			break;
 
 			case Opcodes.LCMP:
@@ -459,47 +624,73 @@ public class OperandStack {
 			break;
 
 			case Opcodes.IRETURN:
+				pop();
 			break;
 
 			case Opcodes.LRETURN:
+				pop();
 			break;
 
 			case Opcodes.FRETURN:
+				pop();
 			break;
 
 			case Opcodes.DRETURN:
+				pop();
 			break;
 
 			case Opcodes.ARETURN:
-
+				pop();
 			break;
 
 			case Opcodes.RETURN:
 			break;
 
-			case Opcodes.ARRAYLENGTH:
+			case Opcodes.ARRAYLENGTH: {
+				pop();
+				Operand op = new Operand();
+				op.setStaticSignature("I");
+				stack.add(op);
+			}
 			break;
 
 			case Opcodes.ATHROW:
+				pop();
 			break;
 
 			case Opcodes.MONITORENTER:
+				pop();
 			break;
 
 			case Opcodes.MONITOREXIT:
+				pop();
 			break;
 		}
 	}
 
 	public void performIntInsn(int opcode, int operand) {
 		switch (opcode) {
-			case Opcodes.BIPUSH:
+			case Opcodes.BIPUSH: {
+				Operand op = new Operand();
+				op.setStaticSignature("B");
+				op.setConstant(operand);
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.SIPUSH:
+			case Opcodes.SIPUSH: {
+				Operand op = new Operand();
+				op.setStaticSignature("S");
+				op.setConstant(operand);
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.NEWARRAY:
+			case Opcodes.NEWARRAY: {
+				Operand op = new Operand();
+				op.setStaticSignature("[Ljava/lang/Object;");
+				stack.add(op);
+			}
 			break;
 		}
 	}
@@ -554,10 +745,20 @@ public class OperandStack {
 			case Opcodes.JSR:
 			break;
 
-			case Opcodes.IFNULL:
+			case Opcodes.IFNULL: {
+				pop();
+				Operand op = new Operand();
+				op.setStaticSignature("Z");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.IFNONNULL:
+			case Opcodes.IFNONNULL: {
+				pop();
+				Operand op = new Operand();
+				op.setStaticSignature("Z");
+				stack.add(op);
+			}
 			break;
 		}
 	}
