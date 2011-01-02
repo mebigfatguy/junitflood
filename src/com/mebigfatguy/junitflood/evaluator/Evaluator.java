@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 import com.mebigfatguy.junitflood.Configuration;
 import com.mebigfatguy.junitflood.security.SaneSecurityManager;
 import com.mebigfatguy.junitflood.security.SecurityManagerFactory;
+import com.mebigfatguy.junitflood.util.SignatureUtils;
 
 public class Evaluator {
 	private static final Pattern ARGS_PATTERN = Pattern.compile("\\[*(L[^;]+;|I|L|J|D)");
@@ -48,7 +49,7 @@ public class Evaluator {
 
 			for (String constructorSignature : constructorSignatures) {
 				try {
-					Constructor<?> cons = cls.getDeclaredConstructor(convertSignatureToClassArray(constructorSignature));
+					Constructor<?> cons = cls.getDeclaredConstructor(SignatureUtils.convertMethodParameterSignaturesToClassArray(classLoader, constructorSignature));
 					Object o = cons.newInstance(createArgsForSignature(constructorSignature));
 
 				} catch (Exception e) {
@@ -63,31 +64,6 @@ public class Evaluator {
 		}
 	}
 
-	private Class<?>[] convertSignatureToClassArray(String signature) throws ClassNotFoundException {
-		int rParenPos = signature.indexOf(')');
-		String args = signature.substring(1, rParenPos);
-
-		List<Class<?>> clses = new ArrayList<Class<?>>();
-		Matcher m = ARGS_PATTERN.matcher(args);
-		while (m.find()) {
-			String typeSig = m.group(1);
-			if ("I".equals(typeSig)) {
-				clses.add(int.class);
-			} else if ("L".equals(typeSig)) {
-				clses.add(long.class);
-			} else if ("J".equals(typeSig)) {
-				clses.add(float.class);
-			} else if ("D".equals(typeSig)) {
-				clses.add(double.class);
-			} else if (typeSig.startsWith("L")) {
-				typeSig = typeSig.substring(1, typeSig.length() - 1);
-				clses.add(classLoader.loadClass(typeSig.replaceAll("/", ".")));
-			}
-		}
-
-		return clses.toArray(new Class<?>[clses.size()]);
-	}
-
 	private Object[] createArgsForSignature(String signature) {
 		int rParenPos = signature.indexOf(')');
 		String args = signature.substring(1, rParenPos);
@@ -98,12 +74,18 @@ public class Evaluator {
 			String typeSig = m.group(1);
 			if ("I".equals(typeSig)) {
 				parms.add(Integer.valueOf(0));
-			} else if ("L".equals(typeSig)) {
-				parms.add(Long.valueOf(0));
 			} else if ("J".equals(typeSig)) {
+				parms.add(Long.valueOf(0));
+			} else if ("F".equals(typeSig)) {
 				parms.add(Float.valueOf(0));
 			} else if ("D".equals(typeSig)) {
 				parms.add(Double.valueOf(0));
+			} else if ("B".equals(typeSig)) {
+				parms.add(Byte.valueOf("0"));
+			} else if ("S".equals(typeSig)) {
+				parms.add(Short.valueOf("0"));
+			} else if ("Z".equals(typeSig)) {
+				parms.add(Boolean.FALSE);
 			} else {
 				parms.add(null);
 			}

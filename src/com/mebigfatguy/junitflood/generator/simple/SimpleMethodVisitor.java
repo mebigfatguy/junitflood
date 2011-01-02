@@ -19,6 +19,7 @@ package com.mebigfatguy.junitflood.generator.simple;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -30,12 +31,14 @@ import org.objectweb.asm.MethodVisitor;
 import com.mebigfatguy.junitflood.Configuration;
 import com.mebigfatguy.junitflood.classpath.ClassLookup;
 import com.mebigfatguy.junitflood.evaluator.Evaluator;
+import com.mebigfatguy.junitflood.expectations.Expectation;
 
 public class SimpleMethodVisitor implements MethodVisitor {
 
 	private final Configuration configuration;
 	private final List<String> methodBodies;
 	private final Set<String> ctors;
+	private final Set<Expectation> expectations = new HashSet<Expectation>();
 	private final Evaluator evaluator;
 	private final StringWriter stringWriter;
 	private final PrintWriter writer;
