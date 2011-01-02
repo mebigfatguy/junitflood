@@ -17,7 +17,7 @@
  */
 package com.mebigfatguy.junitflood.expectations;
 
-public class NullnessExpectation extends Expectation {
+public class NullnessExpectation implements Expectation {
 
 	public enum NullState {UNKNOWN, ISNULL, ISNOTNULL, ANYSTATE};
 

@@ -70,15 +70,25 @@ public class SignatureUtils {
 		return cls;
 	}
 
-	public static Class<?>[] convertMethodParameterSignaturesToClassArray(ClassLoader loader, String signature) throws ClassNotFoundException {
+	public static String[] splitMethodParameterSignatures(String signature) {
 		int rParenPos = signature.indexOf(')');
 		String args = signature.substring(1, rParenPos);
 
-		List<Class<?>> clses = new ArrayList<Class<?>>();
+		List<String> parmSigs = new ArrayList<String>();
 		Matcher m = ARGS_PATTERN.matcher(args);
 		while (m.find()) {
-			String typeSig = m.group(1);
-			clses.add(signatureTypeToClass(loader, typeSig));
+			parmSigs.add(m.group(1));
+		}
+
+		return parmSigs.toArray(new String[parmSigs.size()]);
+	}
+
+	public static Class<?>[] convertMethodParameterSignaturesToClassArray(ClassLoader loader, String signature) throws ClassNotFoundException {
+
+		String[] parmSigs = splitMethodParameterSignatures(signature);
+		List<Class<?>> clses = new ArrayList<Class<?>>();
+		for (String parmSig : parmSigs) {
+			clses.add(signatureTypeToClass(loader, parmSig));
 		}
 
 		return clses.toArray(new Class<?>[clses.size()]);

@@ -19,8 +19,10 @@ package com.mebigfatguy.junitflood.generator.simple;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.objectweb.asm.AnnotationVisitor;
@@ -32,26 +34,29 @@ import com.mebigfatguy.junitflood.Configuration;
 import com.mebigfatguy.junitflood.classpath.ClassLookup;
 import com.mebigfatguy.junitflood.evaluator.Evaluator;
 import com.mebigfatguy.junitflood.expectations.Expectation;
+import com.mebigfatguy.junitflood.expectations.NullnessExpectation;
+import com.mebigfatguy.junitflood.util.SignatureUtils;
 
 public class SimpleMethodVisitor implements MethodVisitor {
 
 	private final Configuration configuration;
+	private final String methodName;
 	private final List<String> methodBodies;
 	private final Set<String> ctors;
-	private final Set<Expectation> expectations = new HashSet<Expectation>();
+	private final Map<String, Set<Expectation>> expectations = new HashMap<String, Set<Expectation>>();
 	private final Evaluator evaluator;
 	private final StringWriter stringWriter;
 	private final PrintWriter writer;
 
-	public SimpleMethodVisitor(Configuration config, String clsName, String methodName, String desc, List<String> bodies) {
+	public SimpleMethodVisitor(Configuration config, String clsName, String mName, String desc, boolean isStatic, List<String> bodies) {
 		configuration = config;
+		methodName = mName;
 		methodBodies = bodies;
 		stringWriter = new StringWriter();
 		writer = new PrintWriter(stringWriter);
 		ClassLookup lookup = config.getRepository();
 		ctors = lookup.getConstructors(clsName, clsName);
-
-		writer.println("\tpublic void test" + upperFirst(methodName) + "() throws Exception {");
+		buildInitialParameterExpectations(desc, isStatic);
 
 		//temporary -- figure out where this goes later
 		evaluator = new Evaluator(config);
@@ -78,6 +83,8 @@ public class SimpleMethodVisitor implements MethodVisitor {
 
 	@Override
 	public void visitEnd() {
+		writer.println("\tpublic void test" + upperFirst(methodName) + "() throws Exception {");
+
 		writer.println("\t}");
 		writer.flush();
 		methodBodies.add(stringWriter.toString());
@@ -164,4 +171,16 @@ public class SimpleMethodVisitor implements MethodVisitor {
 		return Character.toUpperCase(name.charAt(0)) + name.substring(1);
 	}
 
+	private void buildInitialParameterExpectations(String desc, boolean isStatic) {
+		int parmNum = isStatic ? 0 : 1;
+		if (!desc.startsWith("()")) {
+			String[] parmSigs = SignatureUtils.splitMethodParameterSignatures(desc);
+			for (String parmSig : parmSigs) {
+				Set<Expectation> parmExpectations = new HashSet<Expectation>();
+				parmExpectations.add(new NullnessExpectation());
+				expectations.put(String.valueOf(parmNum), parmExpectations);
+				parmNum += (("D".equals(parmSig) || "J".equals(parmSig))) ? 2 : 1;
+			}
+		}
+	}
 }

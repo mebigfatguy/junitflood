@@ -17,15 +17,5 @@
  */
 package com.mebigfatguy.junitflood.expectations;
 
-public abstract class Expectation {
-
-	private String target;
-
-	public String getTarget() {
-		return target;
-	}
-
-	public void setTarget(String target) {
-		this.target = target;
-	}
+public interface Expectation {
 }
