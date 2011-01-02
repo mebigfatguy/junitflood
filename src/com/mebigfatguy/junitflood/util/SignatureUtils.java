@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 
 public class SignatureUtils {
 
-	private static final Pattern ARGS_PATTERN = Pattern.compile("\\[*(L[^;]+;|I|J|D|F|B|S|Z)");
+	public static final Pattern ARGS_PATTERN = Pattern.compile("\\[*(L[^;]+;|I|J|D|F|B|S|Z)");
 	private static final Map<String, Class<?>> primitiveTypes = new HashMap<String, Class<?>>();
 	static {
 		primitiveTypes.put("I", int.class);

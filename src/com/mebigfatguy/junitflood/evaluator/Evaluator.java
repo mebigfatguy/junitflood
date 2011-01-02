@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.mebigfatguy.junitflood.Configuration;
 import com.mebigfatguy.junitflood.security.SaneSecurityManager;
@@ -30,7 +29,6 @@ import com.mebigfatguy.junitflood.security.SecurityManagerFactory;
 import com.mebigfatguy.junitflood.util.SignatureUtils;
 
 public class Evaluator {
-	private static final Pattern ARGS_PATTERN = Pattern.compile("\\[*(L[^;]+;|I|L|J|D)");
 	private final Configuration configuration;
 	private final ClassLoader classLoader;
 
@@ -68,7 +66,7 @@ public class Evaluator {
 		int rParenPos = signature.indexOf(')');
 		String args = signature.substring(1, rParenPos);
 		List<Object> parms = new ArrayList<Object>();
-		Matcher m = ARGS_PATTERN.matcher(args);
+		Matcher m = SignatureUtils.ARGS_PATTERN.matcher(args);
 
 		while (m.find()) {
 			String typeSig = m.group(1);
