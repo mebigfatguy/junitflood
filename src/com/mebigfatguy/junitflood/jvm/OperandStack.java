@@ -230,27 +230,20 @@ public class OperandStack {
 			break;
 
 			case Opcodes.IASTORE:
-			break;
-
 			case Opcodes.LASTORE:
-			break;
-
 			case Opcodes.FASTORE:
-			break;
-
 			case Opcodes.DASTORE:
-			break;
-
 			case Opcodes.AASTORE:
-			break;
-
 			case Opcodes.BASTORE:
-			break;
-
 			case Opcodes.CASTORE:
-			break;
-
 			case Opcodes.SASTORE:
+				if (stack.size() < 2) {
+					stack.clear();
+				} else {
+					Operand value = stack.remove(stack.size() - 1);
+					Operand reg = stack.remove(stack.size() - 1);
+					registers.put(Integer.valueOf(reg.getRegister()), value);
+				}
 			break;
 
 			case Opcodes.POP:
