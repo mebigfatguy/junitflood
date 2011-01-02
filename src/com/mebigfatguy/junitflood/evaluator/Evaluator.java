@@ -80,6 +80,8 @@ public class Evaluator {
 				parms.add(Double.valueOf(0));
 			} else if ("B".equals(typeSig)) {
 				parms.add(Byte.valueOf("0"));
+			} else if ("C".equals(typeSig)) {
+				parms.add(Character.valueOf(' '));
 			} else if ("S".equals(typeSig)) {
 				parms.add(Short.valueOf("0"));
 			} else if ("Z".equals(typeSig)) {

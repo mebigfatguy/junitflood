@@ -42,7 +42,7 @@ public class OperandStack {
 
 			case Opcodes.PUTSTATIC:
 			case Opcodes.PUTFIELD:
-				if (stack.size() > 0) {
+				if (!stack.isEmpty()) {
 					Operand val = stack.remove(stack.size() - 1);
 					fields.put(owner + ":" + name, val);
 				}
@@ -59,73 +59,174 @@ public class OperandStack {
 			case Opcodes.NOP:
 			break;
 
-			case Opcodes.ACONST_NULL:
+			case Opcodes.ACONST_NULL: {
+				Operand op = new Operand();
+				op.setNull(true);
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.ICONST_M1:
+			case Opcodes.ICONST_M1: {
+				Operand op = new Operand();
+				op.setConstant(Integer.valueOf(-1));
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.ICONST_0:
+			case Opcodes.ICONST_0: {
+				Operand op = new Operand();
+				op.setConstant(Integer.valueOf(0));
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.ICONST_1:
+			case Opcodes.ICONST_1: {
+				Operand op = new Operand();
+				op.setConstant(Integer.valueOf(1));
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.ICONST_2:
+			case Opcodes.ICONST_2: {
+				Operand op = new Operand();
+				op.setConstant(Integer.valueOf(2));
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.ICONST_3:
+			case Opcodes.ICONST_3: {
+				Operand op = new Operand();
+				op.setConstant(Integer.valueOf(3));
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.ICONST_4:
+			case Opcodes.ICONST_4: {
+				Operand op = new Operand();
+				op.setConstant(Integer.valueOf(4));
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.ICONST_5:
+			case Opcodes.ICONST_5: {
+				Operand op = new Operand();
+				op.setConstant(Integer.valueOf(5));
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.LCONST_0:
+			case Opcodes.LCONST_0: {
+				Operand op = new Operand();
+				op.setConstant(Long.valueOf(0));
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.LCONST_1:
+			case Opcodes.LCONST_1: {
+				Operand op = new Operand();
+				op.setConstant(Long.valueOf(1));
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.FCONST_0:
+			case Opcodes.FCONST_0: {
+				Operand op = new Operand();
+				op.setConstant(Float.valueOf(0));
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.FCONST_1:
+			case Opcodes.FCONST_1: {
+				Operand op = new Operand();
+				op.setConstant(Float.valueOf(1));
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.FCONST_2:
+			case Opcodes.FCONST_2: {
+				Operand op = new Operand();
+				op.setConstant(Float.valueOf(2));
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.DCONST_0:
+			case Opcodes.DCONST_0: {
+				Operand op = new Operand();
+				op.setConstant(Double.valueOf(0));
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.DCONST_1:
+			case Opcodes.DCONST_1: {
+				Operand op = new Operand();
+				op.setConstant(Double.valueOf(1));
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.IALOAD:
+			case Opcodes.IALOAD: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("I");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.LALOAD:
+			case Opcodes.LALOAD: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("J");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.FALOAD:
+			case Opcodes.FALOAD: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("F");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.DALOAD:
+			case Opcodes.DALOAD: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("D");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.AALOAD:
+			case Opcodes.AALOAD: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("Ljava/lang/Object;");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.BALOAD:
+			case Opcodes.BALOAD: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("B");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.CALOAD:
+			case Opcodes.CALOAD: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("C");
+				stack.add(op);
+			}
 			break;
 
 			case Opcodes.SALOAD:
+			 {
+					pop2();
+					Operand op = new Operand();
+					op.setStaticSignature("S");
+					stack.add(op);
+				}
 			break;
 
 			case Opcodes.IASTORE:
@@ -153,12 +254,18 @@ public class OperandStack {
 			break;
 
 			case Opcodes.POP:
+				pop();
 			break;
 
 			case Opcodes.POP2:
+				pop2();
 			break;
 
 			case Opcodes.DUP:
+				if (!stack.isEmpty()) {
+					Operand operand = stack.get(stack.size() - 1);
+					stack.add(operand);
+				}
 			break;
 
 			case Opcodes.DUP_X1:
@@ -177,6 +284,10 @@ public class OperandStack {
 			break;
 
 			case Opcodes.SWAP:
+				if (stack.size() >= 2) {
+					Operand op = stack.remove(stack.size() - 1);
+					stack.add(stack.size() - 1, op);
+				}
 			break;
 
 			case Opcodes.IADD:
@@ -360,6 +471,7 @@ public class OperandStack {
 			break;
 
 			case Opcodes.ARETURN:
+
 			break;
 
 			case Opcodes.RETURN:
@@ -532,5 +644,15 @@ public class OperandStack {
 			case Opcodes.RET:
 			break;
 		}
+	}
+
+	private void pop() {
+		if (!stack.isEmpty()) {
+			stack.remove(stack.size() - 1);
+		}
+	}
+	private void pop2() {
+		pop();
+		pop();
 	}
 }
