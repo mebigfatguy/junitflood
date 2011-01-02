@@ -20,15 +20,21 @@ package com.mebigfatguy.junitflood.jvm;
 public class Operand {
 	private final int register;
 	private final String field;
+	private final String staticSignature;
+	private final String dynamicSignature;
 
-	public Operand(int reg) {
+	public Operand(int reg, String signature) {
 		register = reg;
 		field = null;
+		staticSignature = signature;
+		dynamicSignature = null;
 	}
 
-	public Operand(String fld) {
+	public Operand(String fld, String signature) {
 		register = -1;
 		field = fld;
+		staticSignature = signature;
+		dynamicSignature = null;
 	}
 
 	public int getRegister() {
@@ -37,5 +43,13 @@ public class Operand {
 
 	public String getField() {
 		return field;
+	}
+
+	public String getSignature() {
+		if (dynamicSignature != null) {
+			return dynamicSignature;
+		}
+
+		return staticSignature;
 	}
 }

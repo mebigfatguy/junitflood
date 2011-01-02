@@ -35,6 +35,7 @@ import com.mebigfatguy.junitflood.classpath.ClassLookup;
 import com.mebigfatguy.junitflood.evaluator.Evaluator;
 import com.mebigfatguy.junitflood.expectations.Expectation;
 import com.mebigfatguy.junitflood.expectations.NullnessExpectation;
+import com.mebigfatguy.junitflood.jvm.OperandStack;
 import com.mebigfatguy.junitflood.util.SignatureUtils;
 
 public class SimpleMethodVisitor implements MethodVisitor {
@@ -43,7 +44,8 @@ public class SimpleMethodVisitor implements MethodVisitor {
 	private final String methodName;
 	private final List<String> methodBodies;
 	private final Set<String> ctors;
-	private final Map<String, Set<Expectation>> expectations = new HashMap<String, Set<Expectation>>();
+	private final Map<String, Set<Expectation>> expectations;
+	private final OperandStack opStack;
 	private final Evaluator evaluator;
 	private final StringWriter stringWriter;
 	private final PrintWriter writer;
@@ -56,6 +58,8 @@ public class SimpleMethodVisitor implements MethodVisitor {
 		writer = new PrintWriter(stringWriter);
 		ClassLookup lookup = config.getRepository();
 		ctors = lookup.getConstructors(clsName, clsName);
+		expectations = new HashMap<String, Set<Expectation>>();
+		opStack = new OperandStack();
 		buildInitialParameterExpectations(desc, isStatic);
 
 		//temporary -- figure out where this goes later
@@ -92,6 +96,7 @@ public class SimpleMethodVisitor implements MethodVisitor {
 
 	@Override
 	public void visitFieldInsn(int opcode, String owner, String name, String desc) {
+		opStack.performFieldInsn(opcode, owner, name, desc);
 	}
 
 	@Override
@@ -99,19 +104,23 @@ public class SimpleMethodVisitor implements MethodVisitor {
 	}
 
 	@Override
-	public void visitIincInsn(int var, int increment1) {
+	public void visitIincInsn(int var, int increment) {
+		opStack.performIincInsn(var, increment);
 	}
 
 	@Override
 	public void visitInsn(int opcode) {
+		opStack.performInsn(opcode);
 	}
 
 	@Override
-	public void visitIntInsn(int opcode, int operand1) {
+	public void visitIntInsn(int opcode, int operand) {
+		opStack.performIntInsn(opcode, operand);
 	}
 
 	@Override
 	public void visitJumpInsn(int opcode, Label label) {
+		opStack.performJumpInsn(opcode, label);
 	}
 
 	@Override
@@ -120,6 +129,7 @@ public class SimpleMethodVisitor implements MethodVisitor {
 
 	@Override
 	public void visitLdcInsn(Object cst) {
+		opStack.performLcdInsn(cst);
 	}
 
 	@Override
@@ -132,6 +142,7 @@ public class SimpleMethodVisitor implements MethodVisitor {
 
 	@Override
 	public void visitLookupSwitchInsn(Label dflt, int[] keys, Label[] labels) {
+		opStack.performLookupSwitchInsn(dflt, keys, labels);
 	}
 
 	@Override
@@ -140,10 +151,12 @@ public class SimpleMethodVisitor implements MethodVisitor {
 
 	@Override
 	public void visitMethodInsn(int opcode, String owner, String name, String desc) {
+		opStack.performMethodInsn(opcode, owner, name, desc);
 	}
 
 	@Override
 	public void visitMultiANewArrayInsn(String desc, int dims) {
+		opStack.performMultiANewArrayInsn(desc, dims);
 	}
 
 	@Override
@@ -153,6 +166,7 @@ public class SimpleMethodVisitor implements MethodVisitor {
 
 	@Override
 	public void visitTableSwitchInsn(int min, int max, Label dflt, Label[] labels) {
+		opStack.performTableSwitchInsn(min, max, dflt, labels);
 	}
 
 	@Override
@@ -161,10 +175,12 @@ public class SimpleMethodVisitor implements MethodVisitor {
 
 	@Override
 	public void visitTypeInsn(int opcode, String type) {
+		opStack.performTypeInsn(opcode, type);
 	}
 
 	@Override
 	public void visitVarInsn(int opcode, int var) {
+		opStack.performVarInsn(opcode, var);
 	}
 
 	private String upperFirst(String name) {
