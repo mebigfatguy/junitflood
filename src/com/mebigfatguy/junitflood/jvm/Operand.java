@@ -22,6 +22,7 @@ public class Operand {
 	private final String field;
 	private final String staticSignature;
 	private final String dynamicSignature;
+	private Object constant;
 
 	public Operand(int reg, String signature) {
 		register = reg;
@@ -51,5 +52,14 @@ public class Operand {
 		}
 
 		return staticSignature;
+	}
+
+
+	public Object getConstant() {
+		return constant;
+	}
+
+	public void setConstant(Object cnst) {
+		constant = cnst;
 	}
 }
