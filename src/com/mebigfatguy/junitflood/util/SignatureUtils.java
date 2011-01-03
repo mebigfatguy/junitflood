@@ -17,6 +17,7 @@
  */
 package com.mebigfatguy.junitflood.util;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -43,6 +44,7 @@ public class SignatureUtils {
 	}
 
 	public static Class<?> signatureTypeToClass(ClassLoader loader, String signatureType) throws ClassNotFoundException {
+
 		String signature = signatureType;
 
 		int arrayCnt = 0;
@@ -65,7 +67,7 @@ public class SignatureUtils {
 		}
 
 		if (arrayCnt > 0) {
-
+			cls = Array.newInstance(cls, new int[arrayCnt]).getClass();
 		}
 
 		return cls;
