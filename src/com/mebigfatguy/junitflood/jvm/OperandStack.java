@@ -262,12 +262,30 @@ public class OperandStack {
 			break;
 
 			case Opcodes.DUP_X1:
+				if (stack.size() >= 2) {
+					Operand op = stack.get(stack.size() - 1);
+					stack.add(stack.size() - 2, op);
+				}
 			break;
 
 			case Opcodes.DUP_X2:
+				if (stack.size() >= 2) {
+					Operand op = stack.get(stack.size() - 2);
+					String sig = op.getStaticSignature();
+					op = stack.get(stack.size() - 1);
+					if ("J".equals(sig) || "D".equals(sig)) {
+						stack.add(stack.size() - 2, op);
+					} else if (stack.size() >= 3) {
+						stack.add(stack.size() - 3, op);
+					}
+				}
 			break;
 
 			case Opcodes.DUP2:
+				if (stack.size() >= 2) {
+					stack.add(stack.get(stack.size() - 2));
+					stack.add(stack.get(stack.size() - 2));
+				}
 			break;
 
 			case Opcodes.DUP2_X1:
@@ -283,112 +301,292 @@ public class OperandStack {
 				}
 			break;
 
-			case Opcodes.IADD:
+			case Opcodes.IADD: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("I");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.LADD:
+			case Opcodes.LADD: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("J");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.FADD:
+			case Opcodes.FADD: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("F");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.DADD:
+			case Opcodes.DADD: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("D");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.ISUB:
+			case Opcodes.ISUB: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("I");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.LSUB:
+			case Opcodes.LSUB: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("J");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.FSUB:
+			case Opcodes.FSUB: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("F");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.DSUB:
+			case Opcodes.DSUB: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("D");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.IMUL:
+			case Opcodes.IMUL: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("I");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.LMUL:
+			case Opcodes.LMUL: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("J");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.FMUL:
+			case Opcodes.FMUL: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("F");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.DMUL:
+			case Opcodes.DMUL: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("D");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.IDIV:
+			case Opcodes.IDIV: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("I");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.LDIV:
+			case Opcodes.LDIV: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("J");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.FDIV:
+			case Opcodes.FDIV: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("F");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.DDIV:
+			case Opcodes.DDIV: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("D");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.IREM:
+			case Opcodes.IREM: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("I");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.LREM:
+			case Opcodes.LREM: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("J");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.FREM:
+			case Opcodes.FREM: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("F");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.DREM:
+			case Opcodes.DREM: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("D");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.INEG:
+			case Opcodes.INEG: {
+				pop();
+				Operand op = new Operand();
+				op.setStaticSignature("I");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.LNEG:
+			case Opcodes.LNEG: {
+				pop();
+				Operand op = new Operand();
+				op.setStaticSignature("J");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.FNEG:
+			case Opcodes.FNEG: {
+				pop();
+				Operand op = new Operand();
+				op.setStaticSignature("F");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.DNEG:
+			case Opcodes.DNEG: {
+				pop();
+				Operand op = new Operand();
+				op.setStaticSignature("D");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.ISHL:
+			case Opcodes.ISHL: {
+					pop2();
+					Operand op = new Operand();
+					op.setStaticSignature("I");
+					stack.add(op);
+				}
 			break;
 
-			case Opcodes.LSHL:
+			case Opcodes.LSHL: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("J");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.ISHR:
+			case Opcodes.ISHR: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("I");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.LSHR:
+			case Opcodes.LSHR: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("J");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.IUSHR:
+			case Opcodes.IUSHR: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("I");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.LUSHR:
+			case Opcodes.LUSHR: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("J");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.IAND:
+			case Opcodes.IAND: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("I");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.LAND:
+			case Opcodes.LAND: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("J");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.IOR:
+			case Opcodes.IOR: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("I");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.LOR:
+			case Opcodes.LOR: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("J");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.IXOR:
+			case Opcodes.IXOR: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("I");
+				stack.add(op);
+			}
 			break;
 
-			case Opcodes.LXOR:
+			case Opcodes.LXOR: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("J");
+				stack.add(op);
+			}
 			break;
 
 			case Opcodes.I2L: {
