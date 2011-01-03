@@ -800,41 +800,27 @@ public class OperandStack {
 			break;
 
 			case Opcodes.LCMP:
-			break;
-
 			case Opcodes.FCMPL:
-			break;
-
 			case Opcodes.FCMPG:
-			break;
-
 			case Opcodes.DCMPL:
-			break;
-
-			case Opcodes.DCMPG:
+			case Opcodes.DCMPG: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("I");
+				stack.add(op);
+			}
 			break;
 
 			case Opcodes.IRETURN:
-				pop();
-			break;
-
 			case Opcodes.LRETURN:
-				pop();
-			break;
-
 			case Opcodes.FRETURN:
-				pop();
-			break;
-
 			case Opcodes.DRETURN:
-				pop();
-			break;
-
 			case Opcodes.ARETURN:
 				pop();
 			break;
 
 			case Opcodes.RETURN:
+				//nop
 			break;
 
 			case Opcodes.ARRAYLENGTH: {
@@ -846,13 +832,7 @@ public class OperandStack {
 			break;
 
 			case Opcodes.ATHROW:
-				pop();
-			break;
-
 			case Opcodes.MONITORENTER:
-				pop();
-			break;
-
 			case Opcodes.MONITOREXIT:
 				pop();
 			break;
@@ -889,67 +869,33 @@ public class OperandStack {
 	public void performJumpInsn(int opcode, Label label) {
 		switch (opcode) {
 			case Opcodes.IFEQ:
-			break;
-
 			case Opcodes.IFNE:
-			break;
-
 			case Opcodes.IFLT:
-			break;
-
 			case Opcodes.IFGE:
-			break;
-
 			case Opcodes.IFGT:
-			break;
-
 			case Opcodes.IFLE:
+			case Opcodes.IFNULL:
+			case Opcodes.IFNONNULL:
+				pop();
 			break;
 
 			case Opcodes.IF_ICMPEQ:
-			break;
-
 			case Opcodes.IF_ICMPNE:
-			break;
-
 			case Opcodes.IF_ICMPLT:
-			break;
-
 			case Opcodes.IF_ICMPGE:
-			break;
-
 			case Opcodes.IF_ICMPGT:
-			break;
-
 			case Opcodes.IF_ICMPLE:
-			break;
-
 			case Opcodes.IF_ACMPEQ:
-			break;
-
 			case Opcodes.IF_ACMPNE:
+				pop2();
 			break;
 
 			case Opcodes.GOTO:
+				//nop
 			break;
 
 			case Opcodes.JSR:
-			break;
-
-			case Opcodes.IFNULL: {
-				pop();
-				Operand op = new Operand();
-				op.setStaticSignature("Z");
-				stack.add(op);
-			}
-			break;
-
-			case Opcodes.IFNONNULL: {
-				pop();
-				Operand op = new Operand();
-				op.setStaticSignature("Z");
-				stack.add(op);
-			}
+				//nop -- a fudge
 			break;
 		}
 	}
@@ -987,16 +933,26 @@ public class OperandStack {
 
 	public void performTypeInsn(int opcode, String type) {
 		switch (opcode) {
-			case Opcodes.NEW:
+			case Opcodes.NEW: {
+				Operand op = new Operand();
+				op.setStaticSignature(type);
+				stack.add(op);
+			}
 			break;
 
 			case Opcodes.ANEWARRAY:
 			break;
 
 			case Opcodes.CHECKCAST:
+				//nop
 			break;
 
-			case Opcodes.INSTANCEOF:
+			case Opcodes.INSTANCEOF: {
+				pop();
+				Operand op = new Operand();
+				op.setStaticSignature("I");
+				stack.add(op);
+			}
 			break;
 		}
 	}
