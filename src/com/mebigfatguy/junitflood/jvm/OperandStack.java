@@ -34,6 +34,11 @@ public class OperandStack {
 	public OperandStack() {
 	}
 
+	public void addParameter(Integer reg, String signature) {
+		Operand op = new Operand(reg.intValue(), signature);
+		registers.put(reg, op);
+	}
+
 	public void performFieldInsn(int opcode, String owner, String name, String desc) {
 		switch (opcode) {
 			case Opcodes.GETSTATIC:

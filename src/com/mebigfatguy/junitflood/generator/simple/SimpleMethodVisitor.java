@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
@@ -60,6 +61,10 @@ public class SimpleMethodVisitor implements MethodVisitor {
 		ctors = lookup.getConstructors(clsName, clsName);
 		expectations = new HashMap<String, Set<Expectation>>();
 		opStack = new OperandStack();
+		SortedMap<Integer, String> parmSigs = SignatureUtils.getParameterRegisters(isStatic, desc);
+		for (Map.Entry<Integer, String> entry : parmSigs.entrySet()) {
+			opStack.addParameter(entry.getKey(), entry.getValue());
+		}
 		buildInitialParameterExpectations(desc, isStatic);
 
 		//temporary -- figure out where this goes later
