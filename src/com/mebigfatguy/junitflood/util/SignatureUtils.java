@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -95,5 +97,19 @@ public class SignatureUtils {
 		}
 
 		return clses.toArray(new Class<?>[clses.size()]);
+	}
+
+	public static SortedMap<Integer, String> getParameterRegisters(boolean isStatic, String signature) {
+		String[] parmSigs = splitMethodParameterSignatures(signature);
+		SortedMap<Integer, String> parmRegs = new TreeMap<Integer, String>();
+
+		int reg = isStatic ? 0 : 1;
+		for (String parmSig : parmSigs) {
+			parmRegs.put(Integer.valueOf(reg), parmSig);
+
+			reg += ("J".equals(parmSig) || "D".equals(parmSig)) ? 2 : 1;
+		}
+
+		return parmRegs;
 	}
 }
