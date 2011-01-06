@@ -294,9 +294,61 @@ public class OperandStack {
 			break;
 
 			case Opcodes.DUP2_X1:
+				if (stack.size() >= 1) {
+					Operand op = stack.get(stack.size() - 1);
+					String sig = op.getStaticSignature();
+					if ("J".equals(sig) || "D".equals(sig)) {
+						if (stack.size() >= 3) {
+							stack.add(stack.size() - 3, op);
+							op = stack.get(stack.size() - 2);
+							stack.add(stack.size() - 4, op);
+						}
+					} else {
+						if (stack.size() >= 2) {
+							stack.add(stack.size() - 2, op);
+						}
+					}
+				}
 			break;
 
 			case Opcodes.DUP2_X2:
+				if (stack.size() >= 1) {
+					Operand op = stack.get(stack.size() - 1);
+					String sig = op.getStaticSignature();
+					if ("J".equals(sig) || "D".equals(sig)) {
+						if (stack.size() >= 2) {
+							op = stack.get(stack.size() - 2);
+							sig = op.getStaticSignature();
+							if ("J".equals(sig) || "D".equals(sig)) {
+								op = stack.get(stack.size() - 1);
+								stack.add(stack.size() - 2, op);
+							} else {
+								if (stack.size() >= 3) {
+									op = stack.get(stack.size() - 1);
+									stack.add(stack.size() - 3, op);
+								}
+							}
+						}
+					} else {
+						if (stack.size() >= 3) {
+							op = stack.get(stack.size() - 3);
+							sig = op.getStaticSignature();
+							if ("J".equals(sig) || "D".equals(sig)) {
+								op = stack.get(stack.size() - 2);
+								stack.add(stack.size() - 3, op);
+								op = stack.get(stack.size() - 1);
+								stack.add(stack.size() - 3, op);
+							} else {
+								if (stack.size() >= 4) {
+									op = stack.get(stack.size() - 2);
+									stack.add(stack.size() - 4, op);
+									op = stack.get(stack.size() - 1);
+									stack.add(stack.size() - 4, op);
+								}
+							}
+						}
+					}
+				}
 			break;
 
 			case Opcodes.SWAP:
