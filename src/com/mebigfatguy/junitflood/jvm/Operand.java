@@ -85,4 +85,20 @@ public class Operand {
 	public void setNull(boolean isNil) {
 		isNull = isNil;
 	}
+
+	@Override
+	public String toString() {
+		String info = getSignature();
+		if (register >= 0) {
+			info += ":R" + register;
+		} else if (field != null) {
+			info += ":F(" + field + ")";
+		}
+
+		if (constant != null) {
+			info += " " + constant;
+		}
+
+		return info;
+	}
 }
