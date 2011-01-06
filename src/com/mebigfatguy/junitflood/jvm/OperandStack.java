@@ -1011,9 +1011,20 @@ public class OperandStack {
 	}
 
 	public void performMultiANewArrayInsn(String desc, int dims) {
+		if (stack.size() < dims) {
+			stack.clear();
+		} else {
+			while ((dims--) > 0) {
+				pop();
+			}
+		}
+		Operand op = new Operand();
+		op.setStaticSignature(desc);
+		stack.add(op);
 	}
 
 	public void performTableSwitchInsn(int min, int max, Label dflt, Label[] labels) {
+		pop();
 	}
 
 	public void performTryCatchBlock(Label start, Label end, Label handler, String type) {
@@ -1029,7 +1040,12 @@ public class OperandStack {
 			}
 			break;
 
-			case Opcodes.ANEWARRAY:
+			case Opcodes.ANEWARRAY: {
+				pop();
+				Operand op = new Operand();
+				op.setStaticSignature(type);
+				stack.add(op);
+			}
 			break;
 
 			case Opcodes.CHECKCAST:
