@@ -134,11 +134,12 @@ public class SimpleMethodVisitor implements MethodVisitor {
 
 	@Override
 	public void visitLabel(Label label) {
+		opStack.performLabel(label);
 	}
 
 	@Override
 	public void visitLdcInsn(Object cst) {
-		opStack.performLcdInsn(cst);
+		opStack.performLdcInsn(cst);
 	}
 
 	@Override
@@ -180,6 +181,7 @@ public class SimpleMethodVisitor implements MethodVisitor {
 
 	@Override
 	public void visitTryCatchBlock(Label start, Label end, Label handler, String type) {
+		opStack.performTryCatchBlock(start, end, handler, type);
 	}
 
 	@Override

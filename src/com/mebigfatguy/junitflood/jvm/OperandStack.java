@@ -32,6 +32,7 @@ public class OperandStack {
 	private final List<Operand> stack = new ArrayList<Operand>();
 	private final Map<Integer, Operand> registers = new HashMap<Integer, Operand>();
 	private final Map<String, Operand> fields = new HashMap<String, Operand>();
+	private final Map<Label, String> catchHandlers = new HashMap<Label, String>();
 
 	public OperandStack() {
 	}
@@ -959,7 +960,16 @@ public class OperandStack {
 		}
 	}
 
-	public void performLcdInsn(Object cst) {
+	public void performLabel(Label label) {
+		String sig = catchHandlers.remove(label);
+		if (sig != null) {
+			Operand op = new Operand();
+			op.setStaticSignature(sig);
+			stack.add(op);
+		}
+	}
+
+	public void performLdcInsn(Object cst) {
 	}
 
 	public void performLookupSwitchInsn(Label dflt, int[] keys, Label[] labels) {
@@ -998,6 +1008,10 @@ public class OperandStack {
 	}
 
 	public void performTableSwitchInsn(int min, int max, Label dflt, Label[] labels) {
+	}
+
+	public void performTryCatchBlock(Label start, Label end, Label handler, String type) {
+		catchHandlers.put(handler, type);
 	}
 
 	public void performTypeInsn(int opcode, String type) {
