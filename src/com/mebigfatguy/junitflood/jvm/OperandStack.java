@@ -1056,4 +1056,9 @@ public class OperandStack {
 		pop();
 		pop();
 	}
+
+	@Override
+	public String toString() {
+		return String.format("Stack: %s%nRegisters: %s%nFields: %s", stack.toString(), registers.toString(), fields.toString());
+	}
 }
