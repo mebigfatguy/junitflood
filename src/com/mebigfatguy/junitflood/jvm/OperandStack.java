@@ -25,6 +25,8 @@ import java.util.Map;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
 
+import com.mebigfatguy.junitflood.util.SignatureUtils;
+
 public class OperandStack {
 
 	private final List<Operand> stack = new ArrayList<Operand>();
@@ -966,18 +968,26 @@ public class OperandStack {
 	public void performMethodInsn(int opcode, String owner, String name, String desc) {
 		switch (opcode) {
 			case Opcodes.INVOKEVIRTUAL:
-			break;
-
 			case Opcodes.INVOKESPECIAL:
-			break;
-
 			case Opcodes.INVOKESTATIC:
-			break;
-
 			case Opcodes.INVOKEINTERFACE:
+				String[] parmSigs = SignatureUtils.splitMethodParameterSignatures(desc);
+				int numParms = parmSigs.length;
+				while ((numParms--) > 0) {
+					pop();
+				}
+				if (opcode == Opcodes.INVOKESTATIC) {
+					pop();
+				}
+
+				String returnSig = SignatureUtils.getReturnSignature(desc);
+				Operand op = new Operand();
+				op.setStaticSignature(returnSig);
+				stack.add(op);
 			break;
 
 			case Opcodes.INVOKEDYNAMIC:
+				//no idea
 			break;
 		}
 	}

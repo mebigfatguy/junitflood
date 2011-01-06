@@ -88,6 +88,11 @@ public class SignatureUtils {
 		return parmSigs.toArray(new String[parmSigs.size()]);
 	}
 
+	public static String getReturnSignature(String signature) {
+		int rParenPos = signature.indexOf(')');
+		return signature.substring(rParenPos + 1);
+	}
+
 	public static Class<?>[] convertMethodParameterSignaturesToClassArray(ClassLoader loader, String signature) throws ClassNotFoundException {
 
 		String[] parmSigs = splitMethodParameterSignatures(signature);
