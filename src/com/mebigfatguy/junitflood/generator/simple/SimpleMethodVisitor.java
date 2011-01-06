@@ -65,6 +65,10 @@ public class SimpleMethodVisitor implements MethodVisitor {
 		for (Map.Entry<Integer, String> entry : parmSigs.entrySet()) {
 			opStack.addParameter(entry.getKey(), entry.getValue());
 		}
+		if (!isStatic) {
+			opStack.addParameter(Integer.valueOf(0), desc);
+		}
+
 		buildInitialParameterExpectations(desc, isStatic);
 
 		//temporary -- figure out where this goes later

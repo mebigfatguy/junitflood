@@ -1033,12 +1033,15 @@ public class OperandStack {
 			case Opcodes.FLOAD:
 			case Opcodes.DLOAD:
 			case Opcodes.ALOAD:
+				stack.add(registers.get(Integer.valueOf(var)));
+			break;
+
 			case Opcodes.ISTORE:
 			case Opcodes.LSTORE:
 			case Opcodes.FSTORE:
 			case Opcodes.DSTORE:
 			case Opcodes.ASTORE:
-				stack.add(registers.get(Integer.valueOf(var)));
+				registers.put(Integer.valueOf(var), stack.remove(stack.size() - 1));
 			break;
 
 			case Opcodes.RET:
