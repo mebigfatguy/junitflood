@@ -45,14 +45,20 @@ public class OperandStack {
 	public void performFieldInsn(int opcode, String owner, String name, String desc) {
 		switch (opcode) {
 			case Opcodes.GETSTATIC:
-			case Opcodes.GETFIELD:
+			case Opcodes.GETFIELD: {
+				Operand op = fields.get(owner + ":" + name);
+				if (op == null) {
+					op = new Operand(owner + ":" + name, desc);
+				}
+				stack.add(op);
+			}
 			break;
 
 			case Opcodes.PUTSTATIC:
 			case Opcodes.PUTFIELD:
 				if (!stack.isEmpty()) {
-					Operand val = stack.remove(stack.size() - 1);
-					fields.put(owner + ":" + name, val);
+					Operand op = stack.remove(stack.size() - 1);
+					fields.put(owner + ":" + name, op);
 				}
 			break;
 		}

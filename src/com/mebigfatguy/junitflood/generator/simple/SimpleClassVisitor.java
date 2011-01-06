@@ -53,9 +53,9 @@ public class SimpleClassVisitor implements ClassVisitor {
 
 	@Override
 	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+		className = name;
 		testFile = new File(configuration.getOutputDirectory(), name + "Test.java");
 		if (!testFile.exists()) {
-			className = name;
 			methodBodies = new ArrayList<String>();
 		} else {
 			logger.warn("Class " + name + " was skipped as it already has a unit test: " + testFile);
