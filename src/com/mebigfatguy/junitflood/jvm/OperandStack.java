@@ -1017,36 +1017,20 @@ public class OperandStack {
 	public void performVarInsn(int opcode, int var) {
 		switch (opcode) {
 			case Opcodes.ILOAD:
-			break;
-
 			case Opcodes.LLOAD:
-			break;
-
 			case Opcodes.FLOAD:
-			break;
-
 			case Opcodes.DLOAD:
-			break;
-
 			case Opcodes.ALOAD:
-			break;
-
 			case Opcodes.ISTORE:
-			break;
-
 			case Opcodes.LSTORE:
-			break;
-
 			case Opcodes.FSTORE:
-			break;
-
 			case Opcodes.DSTORE:
-			break;
-
 			case Opcodes.ASTORE:
+				stack.add(registers.get(Integer.valueOf(var)));
 			break;
 
 			case Opcodes.RET:
+				//nop - a fudge
 			break;
 		}
 	}
