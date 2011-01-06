@@ -976,14 +976,16 @@ public class OperandStack {
 				while ((numParms--) > 0) {
 					pop();
 				}
-				if (opcode == Opcodes.INVOKESTATIC) {
+				if (opcode != Opcodes.INVOKESTATIC) {
 					pop();
 				}
 
 				String returnSig = SignatureUtils.getReturnSignature(desc);
-				Operand op = new Operand();
-				op.setStaticSignature(returnSig);
-				stack.add(op);
+				if (!"V".equals(returnSig)) {
+					Operand op = new Operand();
+					op.setStaticSignature(returnSig);
+					stack.add(op);
+				}
 			break;
 
 			case Opcodes.INVOKEDYNAMIC:
