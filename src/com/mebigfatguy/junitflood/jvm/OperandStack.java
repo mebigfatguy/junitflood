@@ -976,6 +976,23 @@ public class OperandStack {
 	}
 
 	public void performLdcInsn(Object cst) {
+		Operand op = new Operand();
+		Class<?> cls = cst.getClass();
+		if (Integer.class.equals(cls)) {
+			op.setStaticSignature("I");
+		} else if (String.class.equals(cls)) {
+			op.setStaticSignature("Ljava/lang/String;");
+		} else if (Long.class.equals(cls)) {
+			op.setStaticSignature("J");
+		} else if (Float.class.equals(cls)) {
+			op.setStaticSignature("F");
+		} else if (Double.class.equals(cls)) {
+			op.setStaticSignature("D");
+		} else if (Boolean.class.equals(cls)) {
+			op.setStaticSignature("Z");
+		}
+
+		push(op);
 	}
 
 	public void performLookupSwitchInsn(Label dflt, int[] keys, Label[] labels) {
