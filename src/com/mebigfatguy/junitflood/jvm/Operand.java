@@ -24,6 +24,7 @@ public class Operand {
 	private String dynamicSignature = null;
 	private Object constant = null;
 	private boolean isNull = false;
+	private Object userObject = null;
 
 	public Operand() {
 	}
@@ -84,6 +85,14 @@ public class Operand {
 
 	public void setNull(boolean isNil) {
 		isNull = isNil;
+	}
+
+	public Object getUserObject() {
+		return userObject;
+	}
+
+	public void setUserObject(Object uo) {
+		userObject = uo;
 	}
 
 	@Override

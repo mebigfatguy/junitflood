@@ -990,6 +990,7 @@ public class OperandStack {
 			op.setStaticSignature("D");
 		}
 
+		op.setConstant(cst);
 		push(op);
 	}
 
