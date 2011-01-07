@@ -62,7 +62,7 @@ public class ClassLookup {
 		classLoader = createClassLoader();
 	}
 
-	public ClassLoader createClassLoader() {
+	public final ClassLoader createClassLoader() {
 		return AccessController.<URLClassLoader>doPrivileged(new PrivilegedAction<URLClassLoader>() {
 			@Override
 			public URLClassLoader run() {

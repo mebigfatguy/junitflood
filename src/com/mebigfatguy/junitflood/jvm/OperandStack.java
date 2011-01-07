@@ -234,13 +234,12 @@ public class OperandStack {
 			}
 			break;
 
-			case Opcodes.SALOAD:
-			 {
-					pop2();
-					Operand op = new Operand();
-					op.setStaticSignature("S");
-					push(op);
-				}
+			case Opcodes.SALOAD: {
+				pop2();
+				Operand op = new Operand();
+				op.setStaticSignature("S");
+				push(op);
+			}
 			break;
 
 			case Opcodes.IASTORE:
