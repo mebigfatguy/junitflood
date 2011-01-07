@@ -988,8 +988,6 @@ public class OperandStack {
 			op.setStaticSignature("F");
 		} else if (Double.class.equals(cls)) {
 			op.setStaticSignature("D");
-		} else if (Boolean.class.equals(cls)) {
-			op.setStaticSignature("Z");
 		}
 
 		push(op);
