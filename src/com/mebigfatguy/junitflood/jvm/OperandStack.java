@@ -181,7 +181,7 @@ public class OperandStack {
 			case Opcodes.IALOAD: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("I");
+				op.setSignature("I");
 				push(op);
 			}
 			break;
@@ -189,7 +189,7 @@ public class OperandStack {
 			case Opcodes.LALOAD: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("J");
+				op.setSignature("J");
 				push(op);
 			}
 			break;
@@ -197,7 +197,7 @@ public class OperandStack {
 			case Opcodes.FALOAD: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("F");
+				op.setSignature("F");
 				push(op);
 			}
 			break;
@@ -205,7 +205,7 @@ public class OperandStack {
 			case Opcodes.DALOAD: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("D");
+				op.setSignature("D");
 				push(op);
 			}
 			break;
@@ -213,7 +213,7 @@ public class OperandStack {
 			case Opcodes.AALOAD: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("Ljava/lang/Object;");
+				op.setSignature("Ljava/lang/Object;");
 				push(op);
 			}
 			break;
@@ -221,7 +221,7 @@ public class OperandStack {
 			case Opcodes.BALOAD: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("B");
+				op.setSignature("B");
 				push(op);
 			}
 			break;
@@ -229,7 +229,7 @@ public class OperandStack {
 			case Opcodes.CALOAD: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("C");
+				op.setSignature("C");
 				push(op);
 			}
 			break;
@@ -237,7 +237,7 @@ public class OperandStack {
 			case Opcodes.SALOAD: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("S");
+				op.setSignature("S");
 				push(op);
 			}
 			break;
@@ -284,7 +284,7 @@ public class OperandStack {
 			case Opcodes.DUP_X2:
 				if (stack.size() >= 2) {
 					Operand op = stack.get(stack.size() - 2);
-					String sig = op.getStaticSignature();
+					String sig = op.getSignature();
 					op = stack.get(stack.size() - 1);
 					if ("J".equals(sig) || "D".equals(sig)) {
 						stack.add(stack.size() - 2, op);
@@ -304,7 +304,7 @@ public class OperandStack {
 			case Opcodes.DUP2_X1:
 				if (stack.size() >= 1) {
 					Operand op = stack.get(stack.size() - 1);
-					String sig = op.getStaticSignature();
+					String sig = op.getSignature();
 					if ("J".equals(sig) || "D".equals(sig)) {
 						if (stack.size() >= 3) {
 							stack.add(stack.size() - 3, op);
@@ -322,11 +322,11 @@ public class OperandStack {
 			case Opcodes.DUP2_X2:
 				if (stack.size() >= 1) {
 					Operand op = stack.get(stack.size() - 1);
-					String sig = op.getStaticSignature();
+					String sig = op.getSignature();
 					if ("J".equals(sig) || "D".equals(sig)) {
 						if (stack.size() >= 2) {
 							op = stack.get(stack.size() - 2);
-							sig = op.getStaticSignature();
+							sig = op.getSignature();
 							if ("J".equals(sig) || "D".equals(sig)) {
 								op = stack.get(stack.size() - 1);
 								stack.add(stack.size() - 2, op);
@@ -340,7 +340,7 @@ public class OperandStack {
 					} else {
 						if (stack.size() >= 3) {
 							op = stack.get(stack.size() - 3);
-							sig = op.getStaticSignature();
+							sig = op.getSignature();
 							if ("J".equals(sig) || "D".equals(sig)) {
 								op = stack.get(stack.size() - 2);
 								stack.add(stack.size() - 3, op);
@@ -369,7 +369,7 @@ public class OperandStack {
 			case Opcodes.IADD: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("I");
+				op.setSignature("I");
 				push(op);
 			}
 			break;
@@ -377,7 +377,7 @@ public class OperandStack {
 			case Opcodes.LADD: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("J");
+				op.setSignature("J");
 				push(op);
 			}
 			break;
@@ -385,7 +385,7 @@ public class OperandStack {
 			case Opcodes.FADD: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("F");
+				op.setSignature("F");
 				push(op);
 			}
 			break;
@@ -393,7 +393,7 @@ public class OperandStack {
 			case Opcodes.DADD: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("D");
+				op.setSignature("D");
 				push(op);
 			}
 			break;
@@ -401,7 +401,7 @@ public class OperandStack {
 			case Opcodes.ISUB: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("I");
+				op.setSignature("I");
 				push(op);
 			}
 			break;
@@ -409,7 +409,7 @@ public class OperandStack {
 			case Opcodes.LSUB: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("J");
+				op.setSignature("J");
 				push(op);
 			}
 			break;
@@ -417,7 +417,7 @@ public class OperandStack {
 			case Opcodes.FSUB: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("F");
+				op.setSignature("F");
 				push(op);
 			}
 			break;
@@ -425,7 +425,7 @@ public class OperandStack {
 			case Opcodes.DSUB: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("D");
+				op.setSignature("D");
 				push(op);
 			}
 			break;
@@ -433,7 +433,7 @@ public class OperandStack {
 			case Opcodes.IMUL: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("I");
+				op.setSignature("I");
 				push(op);
 			}
 			break;
@@ -441,7 +441,7 @@ public class OperandStack {
 			case Opcodes.LMUL: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("J");
+				op.setSignature("J");
 				push(op);
 			}
 			break;
@@ -449,7 +449,7 @@ public class OperandStack {
 			case Opcodes.FMUL: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("F");
+				op.setSignature("F");
 				push(op);
 			}
 			break;
@@ -457,7 +457,7 @@ public class OperandStack {
 			case Opcodes.DMUL: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("D");
+				op.setSignature("D");
 				push(op);
 			}
 			break;
@@ -465,7 +465,7 @@ public class OperandStack {
 			case Opcodes.IDIV: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("I");
+				op.setSignature("I");
 				push(op);
 			}
 			break;
@@ -473,7 +473,7 @@ public class OperandStack {
 			case Opcodes.LDIV: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("J");
+				op.setSignature("J");
 				push(op);
 			}
 			break;
@@ -481,7 +481,7 @@ public class OperandStack {
 			case Opcodes.FDIV: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("F");
+				op.setSignature("F");
 				push(op);
 			}
 			break;
@@ -489,7 +489,7 @@ public class OperandStack {
 			case Opcodes.DDIV: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("D");
+				op.setSignature("D");
 				push(op);
 			}
 			break;
@@ -497,7 +497,7 @@ public class OperandStack {
 			case Opcodes.IREM: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("I");
+				op.setSignature("I");
 				push(op);
 			}
 			break;
@@ -505,7 +505,7 @@ public class OperandStack {
 			case Opcodes.LREM: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("J");
+				op.setSignature("J");
 				push(op);
 			}
 			break;
@@ -513,7 +513,7 @@ public class OperandStack {
 			case Opcodes.FREM: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("F");
+				op.setSignature("F");
 				push(op);
 			}
 			break;
@@ -521,7 +521,7 @@ public class OperandStack {
 			case Opcodes.DREM: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("D");
+				op.setSignature("D");
 				push(op);
 			}
 			break;
@@ -529,7 +529,7 @@ public class OperandStack {
 			case Opcodes.INEG: {
 				pop();
 				Operand op = new Operand();
-				op.setStaticSignature("I");
+				op.setSignature("I");
 				push(op);
 			}
 			break;
@@ -537,7 +537,7 @@ public class OperandStack {
 			case Opcodes.LNEG: {
 				pop();
 				Operand op = new Operand();
-				op.setStaticSignature("J");
+				op.setSignature("J");
 				push(op);
 			}
 			break;
@@ -545,7 +545,7 @@ public class OperandStack {
 			case Opcodes.FNEG: {
 				pop();
 				Operand op = new Operand();
-				op.setStaticSignature("F");
+				op.setSignature("F");
 				push(op);
 			}
 			break;
@@ -553,7 +553,7 @@ public class OperandStack {
 			case Opcodes.DNEG: {
 				pop();
 				Operand op = new Operand();
-				op.setStaticSignature("D");
+				op.setSignature("D");
 				push(op);
 			}
 			break;
@@ -561,7 +561,7 @@ public class OperandStack {
 			case Opcodes.ISHL: {
 					pop2();
 					Operand op = new Operand();
-					op.setStaticSignature("I");
+					op.setSignature("I");
 					push(op);
 				}
 			break;
@@ -569,7 +569,7 @@ public class OperandStack {
 			case Opcodes.LSHL: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("J");
+				op.setSignature("J");
 				push(op);
 			}
 			break;
@@ -577,7 +577,7 @@ public class OperandStack {
 			case Opcodes.ISHR: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("I");
+				op.setSignature("I");
 				push(op);
 			}
 			break;
@@ -585,7 +585,7 @@ public class OperandStack {
 			case Opcodes.LSHR: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("J");
+				op.setSignature("J");
 				push(op);
 			}
 			break;
@@ -593,7 +593,7 @@ public class OperandStack {
 			case Opcodes.IUSHR: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("I");
+				op.setSignature("I");
 				push(op);
 			}
 			break;
@@ -601,7 +601,7 @@ public class OperandStack {
 			case Opcodes.LUSHR: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("J");
+				op.setSignature("J");
 				push(op);
 			}
 			break;
@@ -609,7 +609,7 @@ public class OperandStack {
 			case Opcodes.IAND: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("I");
+				op.setSignature("I");
 				push(op);
 			}
 			break;
@@ -617,7 +617,7 @@ public class OperandStack {
 			case Opcodes.LAND: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("J");
+				op.setSignature("J");
 				push(op);
 			}
 			break;
@@ -625,7 +625,7 @@ public class OperandStack {
 			case Opcodes.IOR: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("I");
+				op.setSignature("I");
 				push(op);
 			}
 			break;
@@ -633,7 +633,7 @@ public class OperandStack {
 			case Opcodes.LOR: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("J");
+				op.setSignature("J");
 				push(op);
 			}
 			break;
@@ -641,7 +641,7 @@ public class OperandStack {
 			case Opcodes.IXOR: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("I");
+				op.setSignature("I");
 				push(op);
 			}
 			break;
@@ -649,14 +649,14 @@ public class OperandStack {
 			case Opcodes.LXOR: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("J");
+				op.setSignature("J");
 				push(op);
 			}
 			break;
 
 			case Opcodes.I2L: {
 				Operand lop = new Operand();
-				lop.setStaticSignature("J");
+				lop.setSignature("J");
 				if (!stack.isEmpty()) {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
@@ -670,7 +670,7 @@ public class OperandStack {
 
 			case Opcodes.I2F: {
 				Operand fop = new Operand();
-				fop.setStaticSignature("F");
+				fop.setSignature("F");
 				if (!stack.isEmpty()) {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
@@ -684,7 +684,7 @@ public class OperandStack {
 
 			case Opcodes.I2D: {
 				Operand dop = new Operand();
-				dop.setStaticSignature("D");
+				dop.setSignature("D");
 				if (!stack.isEmpty()) {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
@@ -698,7 +698,7 @@ public class OperandStack {
 
 			case Opcodes.L2I: {
 				Operand iop = new Operand();
-				iop.setStaticSignature("I");
+				iop.setSignature("I");
 				if (!stack.isEmpty()) {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
@@ -712,7 +712,7 @@ public class OperandStack {
 
 			case Opcodes.L2F: {
 				Operand fop = new Operand();
-				fop.setStaticSignature("F");
+				fop.setSignature("F");
 				if (!stack.isEmpty()) {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
@@ -726,7 +726,7 @@ public class OperandStack {
 
 			case Opcodes.L2D: {
 				Operand dop = new Operand();
-				dop.setStaticSignature("D");
+				dop.setSignature("D");
 				if (!stack.isEmpty()) {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
@@ -740,7 +740,7 @@ public class OperandStack {
 
 			case Opcodes.F2I: {
 				Operand iop = new Operand();
-				iop.setStaticSignature("I");
+				iop.setSignature("I");
 				if (!stack.isEmpty()) {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
@@ -754,7 +754,7 @@ public class OperandStack {
 
 			case Opcodes.F2L: {
 				Operand lop = new Operand();
-				lop.setStaticSignature("J");
+				lop.setSignature("J");
 				if (!stack.isEmpty()) {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
@@ -768,7 +768,7 @@ public class OperandStack {
 
 			case Opcodes.F2D: {
 				Operand dop = new Operand();
-				dop.setStaticSignature("D");
+				dop.setSignature("D");
 				if (!stack.isEmpty()) {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
@@ -782,7 +782,7 @@ public class OperandStack {
 
 			case Opcodes.D2I: {
 				Operand iop = new Operand();
-				iop.setStaticSignature("I");
+				iop.setSignature("I");
 				if (!stack.isEmpty()) {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
@@ -796,7 +796,7 @@ public class OperandStack {
 
 			case Opcodes.D2L: {
 				Operand lop = new Operand();
-				lop.setStaticSignature("J");
+				lop.setSignature("J");
 				if (!stack.isEmpty()) {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
@@ -810,7 +810,7 @@ public class OperandStack {
 
 			case Opcodes.D2F: {
 				Operand fop = new Operand();
-				fop.setStaticSignature("F");
+				fop.setSignature("F");
 				if (!stack.isEmpty()) {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
@@ -824,7 +824,7 @@ public class OperandStack {
 
 			case Opcodes.I2B: {
 				Operand bop = new Operand();
-				bop.setStaticSignature("B");
+				bop.setSignature("B");
 				if (!stack.isEmpty()) {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
@@ -838,7 +838,7 @@ public class OperandStack {
 
 			case Opcodes.I2C: {
 				Operand cop = new Operand();
-				cop.setStaticSignature("C");
+				cop.setSignature("C");
 				if (!stack.isEmpty()) {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
@@ -852,7 +852,7 @@ public class OperandStack {
 
 			case Opcodes.I2S: {
 				Operand sop = new Operand();
-				sop.setStaticSignature("S");
+				sop.setSignature("S");
 				if (!stack.isEmpty()) {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
@@ -871,7 +871,7 @@ public class OperandStack {
 			case Opcodes.DCMPG: {
 				pop2();
 				Operand op = new Operand();
-				op.setStaticSignature("I");
+				op.setSignature("I");
 				push(op);
 			}
 			break;
@@ -891,7 +891,7 @@ public class OperandStack {
 			case Opcodes.ARRAYLENGTH: {
 				pop();
 				Operand op = new Operand();
-				op.setStaticSignature("I");
+				op.setSignature("I");
 				push(op);
 			}
 			break;
@@ -908,7 +908,7 @@ public class OperandStack {
 		switch (opcode) {
 			case Opcodes.BIPUSH: {
 				Operand op = new Operand();
-				op.setStaticSignature("B");
+				op.setSignature("B");
 				op.setConstant(Byte.valueOf((byte)operand));
 				push(op);
 			}
@@ -916,7 +916,7 @@ public class OperandStack {
 
 			case Opcodes.SIPUSH: {
 				Operand op = new Operand();
-				op.setStaticSignature("S");
+				op.setSignature("S");
 				op.setConstant(Short.valueOf((short)operand));
 				push(op);
 			}
@@ -924,7 +924,7 @@ public class OperandStack {
 
 			case Opcodes.NEWARRAY: {
 				Operand op = new Operand();
-				op.setStaticSignature("[Ljava/lang/Object;");
+				op.setSignature("[Ljava/lang/Object;");
 				push(op);
 			}
 			break;
@@ -969,7 +969,7 @@ public class OperandStack {
 		String sig = catchHandlers.remove(label);
 		if (sig != null) {
 			Operand op = new Operand();
-			op.setStaticSignature(sig);
+			op.setSignature(sig);
 			push(op);
 		}
 	}
@@ -978,15 +978,15 @@ public class OperandStack {
 		Operand op = new Operand();
 		Class<?> cls = cst.getClass();
 		if (Integer.class.equals(cls)) {
-			op.setStaticSignature("I");
+			op.setSignature("I");
 		} else if (String.class.equals(cls)) {
-			op.setStaticSignature("Ljava/lang/String;");
+			op.setSignature("Ljava/lang/String;");
 		} else if (Long.class.equals(cls)) {
-			op.setStaticSignature("J");
+			op.setSignature("J");
 		} else if (Float.class.equals(cls)) {
-			op.setStaticSignature("F");
+			op.setSignature("F");
 		} else if (Double.class.equals(cls)) {
-			op.setStaticSignature("D");
+			op.setSignature("D");
 		}
 
 		op.setConstant(cst);
@@ -1015,7 +1015,7 @@ public class OperandStack {
 				String returnSig = SignatureUtils.getReturnSignature(desc);
 				if (!"V".equals(returnSig)) {
 					Operand op = new Operand();
-					op.setStaticSignature(returnSig);
+					op.setSignature(returnSig);
 					push(op);
 				}
 			break;
@@ -1035,7 +1035,7 @@ public class OperandStack {
 			}
 		}
 		Operand op = new Operand();
-		op.setStaticSignature(desc);
+		op.setSignature(desc);
 		push(op);
 	}
 
@@ -1051,7 +1051,7 @@ public class OperandStack {
 		switch (opcode) {
 			case Opcodes.NEW: {
 				Operand op = new Operand();
-				op.setStaticSignature(type);
+				op.setSignature(type);
 				push(op);
 			}
 			break;
@@ -1059,7 +1059,7 @@ public class OperandStack {
 			case Opcodes.ANEWARRAY: {
 				pop();
 				Operand op = new Operand();
-				op.setStaticSignature(type);
+				op.setSignature(type);
 				push(op);
 			}
 			break;
@@ -1071,7 +1071,7 @@ public class OperandStack {
 			case Opcodes.INSTANCEOF: {
 				pop();
 				Operand op = new Operand();
-				op.setStaticSignature("I");
+				op.setSignature("I");
 				push(op);
 			}
 			break;

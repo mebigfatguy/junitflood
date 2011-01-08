@@ -20,8 +20,7 @@ package com.mebigfatguy.junitflood.jvm;
 public class Operand {
 	private int register = -1;
 	private String field = null;
-	private String staticSignature = null;
-	private String dynamicSignature = null;
+	private String signature = null;
 	private Object constant = null;
 	private boolean isNull = false;
 	private Object userObject = null;
@@ -29,14 +28,14 @@ public class Operand {
 	public Operand() {
 	}
 
-	public Operand(int reg, String signature) {
+	public Operand(int reg, String sig) {
 		register = reg;
-		staticSignature = signature;
+		signature = sig;
 	}
 
-	public Operand(String fld, String signature) {
+	public Operand(String fld, String sig) {
 		field = fld;
-		staticSignature = signature;
+		signature = sig;
 	}
 
 	public int getRegister() {
@@ -48,27 +47,11 @@ public class Operand {
 	}
 
 	public String getSignature() {
-		if (dynamicSignature != null) {
-			return dynamicSignature;
-		}
-
-		return staticSignature;
+		return signature;
 	}
 
-	public void setStaticSignature(String signature) {
-		staticSignature = signature;
-	}
-
-	public String getStaticSignature() {
-		return staticSignature;
-	}
-
-	public void setDynamicSignature(String signature) {
-		dynamicSignature = signature;
-	}
-
-	public String getDynamicSignature() {
-		return dynamicSignature;
+	public void setSignature(String sig) {
+		signature = sig;
 	}
 
 	public Object getConstant() {
