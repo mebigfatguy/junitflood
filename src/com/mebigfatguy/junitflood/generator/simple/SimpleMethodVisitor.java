@@ -36,24 +36,29 @@ import com.mebigfatguy.junitflood.classpath.ClassLookup;
 import com.mebigfatguy.junitflood.evaluator.Evaluator;
 import com.mebigfatguy.junitflood.expectations.Expectation;
 import com.mebigfatguy.junitflood.expectations.NullnessExpectation;
+import com.mebigfatguy.junitflood.generator.Statement;
+import com.mebigfatguy.junitflood.generator.StatementList;
 import com.mebigfatguy.junitflood.jvm.OperandStack;
 import com.mebigfatguy.junitflood.util.SignatureUtils;
 
 public class SimpleMethodVisitor implements MethodVisitor {
 
 	private final Configuration configuration;
+	private final String className;
 	private final String methodName;
+	private final String methodDesc;
 	private final List<String> methodBodies;
 	private final Set<String> ctors;
 	private final Map<String, Set<Expectation>> expectations;
 	private final OperandStack opStack;
-	private final Evaluator evaluator;
 	private final StringWriter stringWriter;
 	private final PrintWriter writer;
 
 	public SimpleMethodVisitor(Configuration config, String clsName, String mName, String desc, boolean isStatic, List<String> bodies) {
 		configuration = config;
+		className = clsName;
 		methodName = mName;
+		methodDesc = desc;
 		methodBodies = bodies;
 		stringWriter = new StringWriter();
 		writer = new PrintWriter(stringWriter);
@@ -70,10 +75,6 @@ public class SimpleMethodVisitor implements MethodVisitor {
 		}
 
 		buildInitialParameterExpectations(desc, isStatic);
-
-		//temporary -- figure out where this goes later
-		evaluator = new Evaluator(config);
-		evaluator.attemptExecution(clsName, methodName, desc);
 	}
 
 	@Override
@@ -96,11 +97,20 @@ public class SimpleMethodVisitor implements MethodVisitor {
 
 	@Override
 	public void visitEnd() {
-		writer.println("\tpublic void test" + upperFirst(methodName) + "() throws Exception {");
+		Evaluator evaluator = new Evaluator(configuration);
+		StatementList statementList = evaluator.attemptExecution(className, methodName, methodDesc);
 
-		writer.println("\t}");
-		writer.flush();
-		methodBodies.add(stringWriter.toString());
+		if (statementList != null) {
+			writer.println("\tpublic void test" + upperFirst(methodName) + "() throws Exception {");
+
+			for (Statement statement : statementList) {
+				writer.println("\t\t" + statement.toString());
+			}
+
+			writer.println("\t}");
+			writer.flush();
+			methodBodies.add(stringWriter.toString());
+		}
 	}
 
 	@Override

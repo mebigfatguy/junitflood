@@ -18,12 +18,11 @@
 package com.mebigfatguy.junitflood.evaluator;
 
 import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Method;
 import java.util.Set;
-import java.util.regex.Matcher;
 
 import com.mebigfatguy.junitflood.Configuration;
+import com.mebigfatguy.junitflood.generator.StatementList;
 import com.mebigfatguy.junitflood.security.SaneSecurityManager;
 import com.mebigfatguy.junitflood.security.SecurityManagerFactory;
 import com.mebigfatguy.junitflood.util.SignatureUtils;
@@ -38,8 +37,10 @@ public class Evaluator {
 
 	}
 
-	public boolean attemptExecution(String clsName, String methodName, String signature) {
+	public StatementList attemptExecution(String clsName, String methodName, String signature) {
 		try {
+			StatementList statementList = new StatementList();
+
 			Set<String> constructorSignatures = configuration.getRepository().getConstructors(clsName, clsName);
 			SecurityManagerFactory.setSecurityManager(new SaneSecurityManager());
 
@@ -48,49 +49,28 @@ public class Evaluator {
 			for (String constructorSignature : constructorSignatures) {
 				try {
 					Constructor<?> cons = cls.getDeclaredConstructor(SignatureUtils.convertMethodParameterSignaturesToClassArray(classLoader, constructorSignature));
-					Object o = cons.newInstance(createArgsForSignature(constructorSignature));
+					Object[] args = SignatureUtils.createDefaultArgsForSignature(constructorSignature);
+					Object o = cons.newInstance(args);
 
+					String objectName = statementList.addConstructor(clsName, args);
+
+					Method m = cls.getMethod(methodName, SignatureUtils.convertMethodParameterSignaturesToClassArray(classLoader, signature));
+					args = SignatureUtils.createDefaultArgsForSignature(constructorSignature);
+					m.invoke(o, args);
+
+					statementList.addMethodCall(objectName, methodName, args, methodName, args);
+
+					return statementList;
 				} catch (Exception e) {
+					statementList.clear();
 				}
 			}
 
-			return true;
+			return null;
 		} catch (Exception e) {
-			return false;
+			return null;
 		} finally {
 			SecurityManagerFactory.setSecurityManager(null);
 		}
-	}
-
-	private Object[] createArgsForSignature(String signature) {
-		int rParenPos = signature.indexOf(')');
-		String args = signature.substring(1, rParenPos);
-		List<Object> parms = new ArrayList<Object>();
-		Matcher m = SignatureUtils.ARGS_PATTERN.matcher(args);
-
-		while (m.find()) {
-			String typeSig = m.group(1);
-			if ("I".equals(typeSig)) {
-				parms.add(Integer.valueOf(0));
-			} else if ("J".equals(typeSig)) {
-				parms.add(Long.valueOf(0));
-			} else if ("F".equals(typeSig)) {
-				parms.add(Float.valueOf(0));
-			} else if ("D".equals(typeSig)) {
-				parms.add(Double.valueOf(0));
-			} else if ("B".equals(typeSig)) {
-				parms.add(Byte.valueOf("0"));
-			} else if ("C".equals(typeSig)) {
-				parms.add(Character.valueOf(' '));
-			} else if ("S".equals(typeSig)) {
-				parms.add(Short.valueOf("0"));
-			} else if ("Z".equals(typeSig)) {
-				parms.add(Boolean.FALSE);
-			} else {
-				parms.add(null);
-			}
-		}
-
-		return parms.toArray(new Object[parms.size()]);
 	}
 }

@@ -117,4 +117,36 @@ public class SignatureUtils {
 
 		return parmRegs;
 	}
+
+	public static Object[] createDefaultArgsForSignature(String signature) {
+		int rParenPos = signature.indexOf(')');
+		String args = signature.substring(1, rParenPos);
+		List<Object> parms = new ArrayList<Object>();
+		Matcher m = SignatureUtils.ARGS_PATTERN.matcher(args);
+
+		while (m.find()) {
+			String typeSig = m.group(1);
+			if ("I".equals(typeSig)) {
+				parms.add(Integer.valueOf(0));
+			} else if ("J".equals(typeSig)) {
+				parms.add(Long.valueOf(0));
+			} else if ("F".equals(typeSig)) {
+				parms.add(Float.valueOf(0));
+			} else if ("D".equals(typeSig)) {
+				parms.add(Double.valueOf(0));
+			} else if ("B".equals(typeSig)) {
+				parms.add(Byte.valueOf("0"));
+			} else if ("C".equals(typeSig)) {
+				parms.add(Character.valueOf(' '));
+			} else if ("S".equals(typeSig)) {
+				parms.add(Short.valueOf("0"));
+			} else if ("Z".equals(typeSig)) {
+				parms.add(Boolean.FALSE);
+			} else {
+				parms.add(null);
+			}
+		}
+
+		return parms.toArray(new Object[parms.size()]);
+	}
 }
