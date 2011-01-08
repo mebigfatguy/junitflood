@@ -661,7 +661,7 @@ public class OperandStack {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
 					if (o != null) {
-						lop.setConstant(Long.valueOf((Integer) o));
+						lop.setConstant(Long.valueOf(((Integer) o).longValue()));
 					}
 				}
 				push(lop);
@@ -675,7 +675,7 @@ public class OperandStack {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
 					if (o != null) {
-						fop.setConstant(Float.valueOf((Integer) o));
+						fop.setConstant(Float.valueOf(((Integer) o).floatValue()));
 					}
 				}
 				push(fop);
@@ -689,7 +689,7 @@ public class OperandStack {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
 					if (o != null) {
-						dop.setConstant(Double.valueOf((Integer) o));
+						dop.setConstant(Double.valueOf(((Integer) o).doubleValue()));
 					}
 				}
 				push(dop);
@@ -703,7 +703,7 @@ public class OperandStack {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
 					if (o != null) {
-						iop.setConstant(((Long) o).intValue());
+						iop.setConstant(Integer.valueOf(((Long) o).intValue()));
 					}
 				}
 				push(iop);
@@ -717,7 +717,7 @@ public class OperandStack {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
 					if (o != null) {
-						fop.setConstant(((Long) o).floatValue());
+						fop.setConstant(Float.valueOf(((Long) o).floatValue()));
 					}
 				}
 				push(fop);
@@ -731,7 +731,7 @@ public class OperandStack {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
 					if (o != null) {
-						dop.setConstant(((Long) o).doubleValue());
+						dop.setConstant(Double.valueOf(((Long) o).doubleValue()));
 					}
 				}
 				push(dop);
@@ -745,7 +745,7 @@ public class OperandStack {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
 					if (o != null) {
-						iop.setConstant(((Float) o).intValue());
+						iop.setConstant(Integer.valueOf(((Float) o).intValue()));
 					}
 				}
 				push(iop);
@@ -759,7 +759,7 @@ public class OperandStack {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
 					if (o != null) {
-						lop.setConstant(((Float) o).longValue());
+						lop.setConstant(Long.valueOf(((Float) o).longValue()));
 					}
 				}
 				push(lop);
@@ -773,7 +773,7 @@ public class OperandStack {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
 					if (o != null) {
-						dop.setConstant(((Float) o).doubleValue());
+						dop.setConstant(Double.valueOf(((Float) o).doubleValue()));
 					}
 				}
 				push(dop);
@@ -787,7 +787,7 @@ public class OperandStack {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
 					if (o != null) {
-						iop.setConstant(((Double) o).intValue());
+						iop.setConstant(Integer.valueOf(((Double) o).intValue()));
 					}
 				}
 				push(iop);
@@ -801,7 +801,7 @@ public class OperandStack {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
 					if (o != null) {
-						lop.setConstant(((Double) o).longValue());
+						lop.setConstant(Long.valueOf(((Double) o).longValue()));
 					}
 				}
 				push(lop);
@@ -815,7 +815,7 @@ public class OperandStack {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
 					if (o != null) {
-						fop.setConstant(((Double) o).floatValue());
+						fop.setConstant(Float.valueOf(((Double) o).floatValue()));
 					}
 				}
 				push(fop);
@@ -829,7 +829,7 @@ public class OperandStack {
 					Operand op = stack.remove(stack.size() - 1);
 					Object o = op.getConstant();
 					if (o != null) {
-						bop.setConstant(((Integer) o).byteValue());
+						bop.setConstant(Byte.valueOf(((Integer) o).byteValue()));
 					}
 				}
 				push(bop);
@@ -909,7 +909,7 @@ public class OperandStack {
 			case Opcodes.BIPUSH: {
 				Operand op = new Operand();
 				op.setStaticSignature("B");
-				op.setConstant(operand);
+				op.setConstant(Byte.valueOf((byte)operand));
 				push(op);
 			}
 			break;
@@ -917,7 +917,7 @@ public class OperandStack {
 			case Opcodes.SIPUSH: {
 				Operand op = new Operand();
 				op.setStaticSignature("S");
-				op.setConstant(operand);
+				op.setConstant(Short.valueOf((short)operand));
 				push(op);
 			}
 			break;
@@ -994,6 +994,7 @@ public class OperandStack {
 	}
 
 	public void performLookupSwitchInsn(Label dflt, int[] keys, Label[] labels) {
+		pop();
 	}
 
 	public void performMethodInsn(int opcode, String owner, String name, String desc) {
