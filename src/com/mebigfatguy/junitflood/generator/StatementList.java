@@ -18,12 +18,16 @@
 package com.mebigfatguy.junitflood.generator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class StatementList implements Iterable<Statement> {
 
 	private final List<Statement> statements = new ArrayList<Statement>();
+	private final Set<String> neededPackages = new TreeSet<String>();
 
 	@Override
 	public Iterator<Statement> iterator() {
@@ -35,6 +39,8 @@ public class StatementList implements Iterable<Statement> {
 	}
 
 	public String addConstructor(String clsName, Object... args) {
+		neededPackages.add(getPackageName(clsName));
+
 		Statement statement = Statement.createConstructor(clsName, args);
 		statements.add(statement);
 		return statement.getObjectName();
@@ -44,5 +50,19 @@ public class StatementList implements Iterable<Statement> {
 		Statement statement = Statement.createMethodCall(objectName, methodName, args);
 		statements.add(statement);
 		return objectName;
+	}
+
+	public Set<String> getNeededPackages() {
+		neededPackages.remove(null);
+		return Collections.<String>unmodifiableSet(neededPackages);
+	}
+
+	private String getPackageName(String clsName) {
+		int slashPos = clsName.lastIndexOf('/');
+		if (slashPos >= 0) {
+			return clsName.substring(0, slashPos).replaceAll("/", ".");
+		}
+
+		return null;
 	}
 }

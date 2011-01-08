@@ -34,6 +34,10 @@ public class Statement {
 	public static Statement createConstructor(String clsName, Object... args) {
 		Statement statement = new Statement();
 		statement.type = StatementType.CONSTRUCTOR;
+		int slashPos = clsName.lastIndexOf('/');
+		if (slashPos >= 0) {
+			clsName = clsName.substring(slashPos+1);
+		}
 		statement.className = clsName.replaceAll("/", ".");
 		statement.objectName = "o";
 		statement.methodArgs = new Object[args.length];
