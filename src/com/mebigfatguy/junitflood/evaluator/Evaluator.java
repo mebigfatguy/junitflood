@@ -58,7 +58,7 @@ public class Evaluator {
 					args = SignatureUtils.createDefaultArgsForSignature(constructorSignature);
 					m.invoke(o, args);
 
-					statementList.addMethodCall(objectName, methodName, args, methodName, args);
+					statementList.addMethodCall(objectName, methodName, args);
 
 					return statementList;
 				} catch (Exception e) {

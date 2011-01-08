@@ -41,7 +41,7 @@ public class StatementList implements Iterable<Statement> {
 	}
 
 	public String addMethodCall(String objectName, String methodName, Object... args) {
-		Statement statement = Statement.createMethodCall(objectName, args);
+		Statement statement = Statement.createMethodCall(objectName, methodName, args);
 		statements.add(statement);
 		return objectName;
 	}

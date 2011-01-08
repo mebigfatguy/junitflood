@@ -41,10 +41,11 @@ public class Statement {
 		return statement;
 	}
 
-	public static Statement createMethodCall(String objectName, Object... args) {
+	public static Statement createMethodCall(String objectName, String methodName, Object... args) {
 		Statement statement = new Statement();
 		statement.type = StatementType.METHODCALL;
 		statement.objectName = objectName;
+		statement.methodName = methodName;
 		statement.methodArgs = new Object[args.length];
 		System.arraycopy(args, 0, statement.methodArgs, 0, args.length);
 		return statement;
