@@ -23,7 +23,6 @@ import java.security.Permission;
 
 public class SecurityManagerFactory extends SecurityManager {
 
-	private static final SecurityManagerFactory instance = new SecurityManagerFactory();
 	private static SecurityManager delegatedSecurityManager = null;
 
 	public static void initialize() {
@@ -39,6 +38,7 @@ public class SecurityManagerFactory extends SecurityManager {
 	}
 
 	@Override
+	@Deprecated
 	public boolean getInCheck() {
 		return super.getInCheck();
 	}
@@ -49,31 +49,37 @@ public class SecurityManagerFactory extends SecurityManager {
 	}
 
 	@Override
+	@Deprecated
 	protected ClassLoader currentClassLoader() {
 		return super.currentClassLoader();
 	}
 
 	@Override
+	@Deprecated
 	protected Class<?> currentLoadedClass() {
 		return super.currentLoadedClass();
 	}
 
 	@Override
+	@Deprecated
 	protected int classDepth(String name) {
 		return super.classDepth(name);
 	}
 
 	@Override
+	@Deprecated
 	protected int classLoaderDepth() {
 		return super.classLoaderDepth();
 	}
 
 	@Override
+	@Deprecated
 	protected boolean inClass(String name) {
 		return super.inClass(name);
 	}
 
 	@Override
+	@Deprecated
 	protected boolean inClassLoader() {
 		return super.inClassLoader();
 	}
@@ -217,6 +223,7 @@ public class SecurityManagerFactory extends SecurityManager {
 	}
 
 	@Override
+	@Deprecated
 	public void checkMulticast(InetAddress maddr, byte ttl) {
 		if (delegatedSecurityManager != null) {
 			delegatedSecurityManager.checkMulticast(maddr, ttl);
