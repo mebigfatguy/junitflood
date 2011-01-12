@@ -18,33 +18,22 @@
 package com.mebigfatguy.junitflood.classpath;
 
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import java.util.Collections;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.objectweb.asm.ClassReader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.mebigfatguy.junitflood.Configuration;
-import com.mebigfatguy.junitflood.util.Closer;
 
 public class ClassLookup {
 
-	private static final  Logger logger = LoggerFactory.getLogger(ClassLookup.class);
-
 	private final ClassLoader classLoader;
-	private final Map<String, Map<LookupType, Map<String, Access>>> classDetails = new HashMap<String, Map<LookupType, Map<String, Access>>>();
+	private final Map<String, ClassDetails> classDetails = new HashMap<String, ClassDetails>();
 	private final URL[] urls;
 
 	public ClassLookup(Configuration config) throws MalformedURLException {
@@ -72,34 +61,12 @@ public class ClassLookup {
 	}
 
 	public Set<String> getConstructors(String clsName, String fromClass) {
-		Map<LookupType, Map<String, Access>> classInfo = classDetails.get(clsName);
+		ClassDetails classInfo = classDetails.get(clsName);
 		if (classInfo == null) {
-			classInfo = loadClassDetails(clsName);
+			classInfo = new ClassDetails(classLoader, clsName);
+			classDetails.put(clsName, classInfo);
 		}
 
-		Map<String, Access> ctors = classInfo.get(LookupType.CONSTRUCTOR);
-		if (ctors != null) {
-			return ctors.keySet(); //for now
-		} else {
-			return Collections.<String>emptySet();
-		}
-	}
-
-	private Map<LookupType, Map<String, Access>> loadClassDetails(String clsName) {
-
-		Map<LookupType, Map<String, Access>> details = new EnumMap<LookupType, Map<String, Access>>(LookupType.class);
-		InputStream is = null;
-		try {
-			is = classLoader.getResourceAsStream(clsName + ".class");
-			ClassReader cr = new ClassReader(is);
-			ClassInfoCollectingVisitor cicv = new ClassInfoCollectingVisitor(details);
-			cr.accept(cicv, ClassReader.SKIP_DEBUG|ClassReader.SKIP_CODE);
-			classDetails.put(clsName, details);
-		} catch (IOException ioe) {
-			logger.error("Failed parsing class " + clsName, ioe);
-		} finally {
-			Closer.closeQuietly(is);
-		}
-		return details;
+		return classInfo.getConstructors(fromClass);
 	}
 }
