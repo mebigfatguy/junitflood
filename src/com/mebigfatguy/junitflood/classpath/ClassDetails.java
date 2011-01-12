@@ -60,6 +60,15 @@ public class ClassDetails {
 		}
 	}
 
+	public Set<String> getMethods(String fromClass) {
+		Map<String, Access> methods = accessInfo.get(LookupType.METHOD);
+		if (methods != null) {
+			return Collections.<String>unmodifiableSet(methods.keySet()); //for now
+		} else {
+			return Collections.<String>emptySet();
+		}
+	}
+
 	private Map<LookupType, Map<String, Access>> loadClassDetails(String clsName) {
 
 		Map<LookupType, Map<String, Access>> details = new EnumMap<LookupType, Map<String, Access>>(LookupType.class);
