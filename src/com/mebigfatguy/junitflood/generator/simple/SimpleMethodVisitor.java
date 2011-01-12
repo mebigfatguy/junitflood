@@ -32,7 +32,6 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 import com.mebigfatguy.junitflood.Configuration;
-import com.mebigfatguy.junitflood.classpath.ClassLookup;
 import com.mebigfatguy.junitflood.evaluator.Evaluator;
 import com.mebigfatguy.junitflood.expectations.Expectation;
 import com.mebigfatguy.junitflood.expectations.NullnessExpectation;
@@ -48,7 +47,6 @@ public class SimpleMethodVisitor implements MethodVisitor {
 	private final String methodName;
 	private final String methodDesc;
 	private final List<String> methodBodies;
-	private final Set<String> ctors;
 	private final Map<String, Set<Expectation>> expectations;
 	private final OperandStack opStack;
 	private final StringWriter stringWriter;
@@ -62,8 +60,6 @@ public class SimpleMethodVisitor implements MethodVisitor {
 		methodBodies = bodies;
 		stringWriter = new StringWriter();
 		writer = new PrintWriter(stringWriter);
-		ClassLookup lookup = config.getRepository();
-		ctors = lookup.getConstructors(clsName, clsName);
 		expectations = new HashMap<String, Set<Expectation>>();
 		opStack = new OperandStack();
 		SortedMap<Integer, String> parmSigs = SignatureUtils.getParameterRegisters(isStatic, desc);
