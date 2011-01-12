@@ -40,4 +40,9 @@ public class NullnessExpectation implements Expectation {
 	public boolean equals(Object o) {
 		return o instanceof NullnessExpectation;
 	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + ":" + state.toString();
+	}
 }
