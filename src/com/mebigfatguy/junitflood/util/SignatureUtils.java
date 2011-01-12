@@ -149,4 +149,9 @@ public class SignatureUtils {
 
 		return parms.toArray(new Object[parms.size()]);
 	}
+
+	public static boolean isParm(String desc, boolean isStatic, int reg) {
+		SortedMap<Integer, String> regs = getParameterRegisters(isStatic, desc);
+		return (regs.containsKey(Integer.valueOf(reg)));
+	}
 }

@@ -17,27 +17,27 @@
  */
 package com.mebigfatguy.junitflood.expectations;
 
-public class NullnessExpectation implements Expectation {
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
-	public enum NullState {UNKNOWN, ISNULL, ISNOTNULL, ANYSTATE};
+public class Expectations {
 
-	private NullState state = NullState.UNKNOWN;
+	public Map<String, Set<Expectation>> expectations = new HashMap<String, Set<Expectation>>();
 
-	public NullnessExpectation(NullState nullState) {
-		state = nullState;
+	public void addExpectation(int register, Expectation expectation) {
+		String reg = String.valueOf(register);
+		addExpectation(reg, expectation);
 	}
 
-	public NullState getState() {
-		return state;
-	}
+	public void addExpectation(String field, Expectation expectation) {
+		Set<Expectation> fieldExpectations = expectations.get(field);
+		if (fieldExpectations == null) {
+			fieldExpectations = new HashSet<Expectation>();
+			expectations.put(field, fieldExpectations);
+		}
 
-	@Override
-	public int hashCode() {
-		return 0;
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		return o instanceof NullnessExpectation;
+		fieldExpectations.add(expectation);
 	}
 }

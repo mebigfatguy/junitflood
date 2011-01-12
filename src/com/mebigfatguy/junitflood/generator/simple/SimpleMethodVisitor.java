@@ -19,24 +19,24 @@ package com.mebigfatguy.junitflood.generator.simple;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.SortedMap;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Attribute;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import com.mebigfatguy.junitflood.Configuration;
 import com.mebigfatguy.junitflood.evaluator.Evaluator;
-import com.mebigfatguy.junitflood.expectations.Expectation;
+import com.mebigfatguy.junitflood.expectations.Expectations;
 import com.mebigfatguy.junitflood.expectations.NullnessExpectation;
+import com.mebigfatguy.junitflood.expectations.NullnessExpectation.NullState;
 import com.mebigfatguy.junitflood.generator.Statement;
 import com.mebigfatguy.junitflood.generator.StatementList;
+import com.mebigfatguy.junitflood.jvm.Operand;
 import com.mebigfatguy.junitflood.jvm.OperandStack;
 import com.mebigfatguy.junitflood.util.SignatureUtils;
 
@@ -46,8 +46,9 @@ public class SimpleMethodVisitor implements MethodVisitor {
 	private final String className;
 	private final String methodName;
 	private final String methodDesc;
+	private final boolean methodIsStatic;
 	private final List<String> methodBodies;
-	private final Map<String, Set<Expectation>> expectations;
+	private final Expectations expectations;
 	private final OperandStack opStack;
 	private final StringWriter stringWriter;
 	private final PrintWriter writer;
@@ -57,10 +58,11 @@ public class SimpleMethodVisitor implements MethodVisitor {
 		className = clsName;
 		methodName = mName;
 		methodDesc = desc;
+		methodIsStatic = isStatic;
 		methodBodies = bodies;
 		stringWriter = new StringWriter();
 		writer = new PrintWriter(stringWriter);
-		expectations = new HashMap<String, Set<Expectation>>();
+		expectations = new Expectations();
 		opStack = new OperandStack();
 		SortedMap<Integer, String> parmSigs = SignatureUtils.getParameterRegisters(isStatic, desc);
 		for (Map.Entry<Integer, String> entry : parmSigs.entrySet()) {
@@ -167,6 +169,19 @@ public class SimpleMethodVisitor implements MethodVisitor {
 
 	@Override
 	public void visitMethodInsn(int opcode, String owner, String name, String desc) {
+
+		if (opcode != Opcodes.INVOKESTATIC) {
+			String[] parmSigs = SignatureUtils.splitMethodParameterSignatures(desc);
+			Operand op = opStack.getOperand(parmSigs.length);
+			if ((op.getRegister() >= 0) && (SignatureUtils.isParm(methodDesc, methodIsStatic, op.getRegister()))) {
+				NullnessExpectation nullExp = new NullnessExpectation(NullState.ISNOTNULL);
+				expectations.addExpectation(op.getRegister(), nullExp);
+			} else if (op.getField() != null) {
+				NullnessExpectation nullExp = new NullnessExpectation(NullState.ISNOTNULL);
+				expectations.addExpectation(op.getField(), nullExp);
+			}
+		}
+
 		opStack.performMethodInsn(opcode, owner, name, desc);
 	}
 
@@ -209,9 +224,7 @@ public class SimpleMethodVisitor implements MethodVisitor {
 			int parmNum = isStatic ? 0 : 1;
 			String[] parmSigs = SignatureUtils.splitMethodParameterSignatures(desc);
 			for (String parmSig : parmSigs) {
-				Set<Expectation> parmExpectations = new HashSet<Expectation>();
-				parmExpectations.add(new NullnessExpectation());
-				expectations.put(String.valueOf(parmNum), parmExpectations);
+				expectations.addExpectation(parmNum, new NullnessExpectation(NullState.UNKNOWN));
 				parmNum += (("D".equals(parmSig) || "J".equals(parmSig))) ? 2 : 1;
 			}
 		}

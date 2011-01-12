@@ -24,10 +24,14 @@ import java.util.Map;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.Opcodes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.mebigfatguy.junitflood.util.SignatureUtils;
 
 public class OperandStack {
+
+	private static final  Logger logger = LoggerFactory.getLogger(OperandStack.class);
 
 	private final List<Operand> stack = new ArrayList<Operand>();
 	private final Map<Integer, Operand> registers = new HashMap<Integer, Operand>();
@@ -40,6 +44,15 @@ public class OperandStack {
 	public void addParameter(Integer reg, String signature) {
 		Operand op = new Operand(reg.intValue(), signature);
 		registers.put(reg, op);
+	}
+
+	public Operand getOperand(int stackPosition) {
+		if (stack.size() > stackPosition) {
+			return stack.get(stackPosition);
+		} else {
+			logger.error("Reguest for stack position: " + stackPosition + " doesn't exist for stack: " + stack);
+			return new Operand();
+		}
 	}
 
 	public void performFieldInsn(int opcode, String owner, String name, String desc) {
