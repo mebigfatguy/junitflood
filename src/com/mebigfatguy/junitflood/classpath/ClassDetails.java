@@ -72,16 +72,12 @@ public class ClassDetails {
 	private Map<LookupType, Map<String, Access>> loadClassDetails(String clsName) {
 
 		Map<LookupType, Map<String, Access>> details = new EnumMap<LookupType, Map<String, Access>>(LookupType.class);
-		InputStream is = null;
-		try {
-			is = classLoader.getResourceAsStream(clsName + ".class");
+		try (InputStream is = classLoader.getResourceAsStream(clsName + ".class")) {			
 			ClassReader cr = new ClassReader(is);
 			ClassInfoCollectingVisitor cicv = new ClassInfoCollectingVisitor(this);
 			cr.accept(cicv, ClassReader.SKIP_DEBUG|ClassReader.SKIP_CODE);
 		} catch (IOException ioe) {
-			logger.error("Failed parsing class " + clsName, ioe);
-		} finally {
-			Closer.closeQuietly(is);
+			logger.error("Failed parsing class {}", clsName, ioe);
 		}
 		return details;
 	}

@@ -76,9 +76,7 @@ public class SimpleClassVisitor extends ClassVisitor {
 	public void visitEnd() {
 		if (methodBodies.size() > 0) {
 			testFile.getParentFile().mkdirs();
-			PrintWriter writer = null;
-			try {
-				writer = new PrintWriter(new BufferedWriter(new FileWriter(testFile)));
+			try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(testFile)))) {
 				int slashPos = className.lastIndexOf('/');
 				if (slashPos >= 0) {
 					String packageName = className.substring(0, slashPos).replaceAll("/", ".");
@@ -107,8 +105,6 @@ public class SimpleClassVisitor extends ClassVisitor {
 				writer.println("}");
 			} catch (IOException ioe) {
 				logger.error("Failed opening file to create test file: {}", testFile, ioe);
-			} finally {
-				Closer.closeQuietly(writer);
 			}
 		}
 	}

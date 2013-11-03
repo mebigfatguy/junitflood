@@ -44,14 +44,10 @@ public class SimpleGenerator implements JUnitGenerator {
 			ClassPathIterator iterator = new ClassPathIterator(configuration.getScanClassPath());
 			while (iterator.hasNext()) {
 				ClassPathItem item = iterator.next();
-				InputStream is = null;
-				try {
-					is = item.getInputStream();
+				try (InputStream is = item.getInputStream()) {
 					ClassReader cr = new ClassReader(is);
 					SimpleClassVisitor scv = new SimpleClassVisitor(configuration);
 					cr.accept(scv, ClassReader.SKIP_DEBUG);
-				} finally {
-					Closer.closeQuietly(is);
 				}
 			}
 		} catch (IOException ioe) {
