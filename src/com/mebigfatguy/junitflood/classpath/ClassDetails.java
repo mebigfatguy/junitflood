@@ -30,8 +30,6 @@ import org.objectweb.asm.Opcodes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.mebigfatguy.junitflood.util.Closer;
-
 public class ClassDetails {
 	private static final  Logger logger = LoggerFactory.getLogger(ClassDetails.class);
 

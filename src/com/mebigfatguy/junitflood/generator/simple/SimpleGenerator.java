@@ -27,7 +27,6 @@ import com.mebigfatguy.junitflood.classpath.ClassPathItem;
 import com.mebigfatguy.junitflood.classpath.ClassPathIterator;
 import com.mebigfatguy.junitflood.generator.GeneratorException;
 import com.mebigfatguy.junitflood.generator.JUnitGenerator;
-import com.mebigfatguy.junitflood.util.Closer;
 
 public class SimpleGenerator implements JUnitGenerator {
 

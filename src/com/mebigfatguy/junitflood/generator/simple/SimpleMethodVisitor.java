@@ -197,7 +197,7 @@ public class SimpleMethodVisitor extends MethodVisitor {
 	}
 
 	@Override
-	public void visitTableSwitchInsn(int min, int max, Label dflt, Label[] labels) {
+	public void visitTableSwitchInsn(int min, int max, Label dflt, Label... labels) {
 		opStack.performTableSwitchInsn(min, max, dflt, labels);
 	}
 
