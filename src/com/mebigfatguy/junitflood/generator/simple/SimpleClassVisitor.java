@@ -38,7 +38,7 @@ import com.mebigfatguy.junitflood.Configuration;
 import com.mebigfatguy.junitflood.util.Closer;
 
 
-public class SimpleClassVisitor implements ClassVisitor {
+public class SimpleClassVisitor extends ClassVisitor {
 
 	private static final  Logger logger = LoggerFactory.getLogger(SimpleClassVisitor.class);
 
@@ -48,6 +48,7 @@ public class SimpleClassVisitor implements ClassVisitor {
 	private List<String> methodBodies = null;
 
 	public SimpleClassVisitor(Configuration config) {
+	    super(Opcodes.ASM4);
 		configuration = config;
 	}
 

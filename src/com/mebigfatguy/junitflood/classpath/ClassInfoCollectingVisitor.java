@@ -24,11 +24,12 @@ import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-public class ClassInfoCollectingVisitor implements ClassVisitor {
+public class ClassInfoCollectingVisitor extends ClassVisitor {
 
 	private final ClassDetails details;
 
 	public ClassInfoCollectingVisitor(ClassDetails info) {
+	    super(Opcodes.ASM4);
 		details = info;
 	}
 

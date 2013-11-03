@@ -40,7 +40,7 @@ import com.mebigfatguy.junitflood.jvm.Operand;
 import com.mebigfatguy.junitflood.jvm.OperandStack;
 import com.mebigfatguy.junitflood.util.SignatureUtils;
 
-public class SimpleMethodVisitor implements MethodVisitor {
+public class SimpleMethodVisitor extends MethodVisitor {
 
 	private final Configuration configuration;
 	private final String className;
@@ -54,6 +54,7 @@ public class SimpleMethodVisitor implements MethodVisitor {
 	private final PrintWriter writer;
 
 	public SimpleMethodVisitor(Configuration config, String clsName, String mName, String desc, boolean isStatic, List<String> bodies) {
+	    super(Opcodes.ASM4);
 		configuration = config;
 		className = clsName;
 		methodName = mName;
