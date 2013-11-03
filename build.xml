@@ -18,17 +18,18 @@
  */
 -->
 
-<project name="junitflood" default="release">
+<project name="junitflood" default="info" xmlns:yank="antlib:com.mebigfatguy.yank">
 
 	<property file="build.properties"/>
+	<property file="version.properties" />
 
 	<property name="src.dir" value="${basedir}/src"/>
 	<property name="classes.dir" value="${basedir}/classes"/>
 	<property name="lib.dir" value="${basedir}/lib"/>
 	<property name="javadoc.dir" value="${basedir}/javadoc"/>
 	<property name="htdocs.dir" value="${basedir}/htdocs"/>
-	<property name="javac.source" value="1.5"/>
-	<property name="javac.target" value="1.5"/>
+	<property name="javac.source" value="1.7"/>
+	<property name="javac.target" value="1.7"/>
 	<property name="javac.deprecation" value="on"/>
 	<property name="javac.debug" value="on"/>
 
@@ -36,11 +37,27 @@
 
 	<path id="junitflood.classpath">
 		<pathelement location="${classes.dir}"/>
-		<pathelement location="${lib.dir}/asm-3.3.1.jar"/>
-		<pathelement location="${lib.dir}/commons-cli-1.2.jar"/>
-		<pathelement location="${lib.dir}/slf4j-api-1.6.1.jar"/>
-		<pathelement location="${lib.dir}/slf4j-simple-1.6.1.jar"/>
+		<pathelement location="${lib.dir}/asm-${asm.version}.jar"/>
+		<pathelement location="${lib.dir}/commons-cli-${commons-cli}.jar"/>
+		<pathelement location="${lib.dir}/slf4j-api-${slf4j-api}.jar"/>
+		<pathelement location="${lib.dir}/slf4j-simple-${slf4j-simple}.jar"/>
 	</path>
+	
+    <target name="info">
+        <echo message="JUnitFlood - an experiment in creating junit tests from code inspection"/>
+        <echo message=""/>
+        <echo message="    this project uses yank (https://github.com/mebigfatguy/yank) for dependency management"/>
+        <echo message="    download yank.jar and place in ant/lib directory"/>
+        <echo message="    http://search.maven.org/#artifactdetails%7Ccom.mebigfatguy.yank%7Cyank%7C0.4.2%7Cjar"/>
+    </target>
+	
+   <target name="yank">
+        <mkdir dir="${lib.dir}"/>
+        <yank:yank yankFile="${basedir}/yank.xls" destination="${lib.dir}" source="true">
+            <server url="http://repo1.maven.org/maven2"/>
+            <generateVersions propertyFileName="${basedir}/version.properties" />
+        </yank:yank>
+    </target>
 	
 	<target name="clean" description="removes all generated collateral">
 		<delete dir="${classes.dir}"/>
@@ -49,7 +66,7 @@
 		<delete file="${basedir}/junitflood-src-${junitflood.version}.zip"/>
 	</target>
 
-	<target name="-init" description="prepares repository for a build">
+	<target name="-init" depends="yank" description="prepares repository for a build">
 		<mkdir dir="${classes.dir}"/>
 		<mkdir dir="${javadoc.dir}"/>
 	</target>
