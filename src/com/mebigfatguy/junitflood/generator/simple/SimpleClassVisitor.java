@@ -59,7 +59,7 @@ public class SimpleClassVisitor extends ClassVisitor {
 		if (!testFile.exists()) {
 			methodBodies = new ArrayList<String>();
 		} else {
-			logger.warn("Class " + name + " was skipped as it already has a unit test: " + testFile);
+			logger.warn("Class {} was skipped as it already has a unit test: {}", name, testFile);
 		}
 	}
 
@@ -106,7 +106,7 @@ public class SimpleClassVisitor extends ClassVisitor {
 				}
 				writer.println("}");
 			} catch (IOException ioe) {
-				logger.error("Failed opening file to create test file: " + testFile, ioe);
+				logger.error("Failed opening file to create test file: {}", testFile, ioe);
 			} finally {
 				Closer.closeQuietly(writer);
 			}

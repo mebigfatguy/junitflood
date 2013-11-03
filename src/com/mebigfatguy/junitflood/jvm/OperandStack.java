@@ -50,7 +50,7 @@ public class OperandStack {
 		if (stack.size() > stackPosition) {
 			return stack.get(stackPosition);
 		} else {
-			logger.error("Reguest for stack position: " + stackPosition + " doesn't exist for stack: " + stack);
+			logger.error("Request for stack position: {} doesn't exist for stack: {}", stackPosition, stack);
 			return new Operand();
 		}
 	}
