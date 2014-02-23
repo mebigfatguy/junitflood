@@ -28,7 +28,7 @@ public class Configuration {
 	private Set<File> scanClassPath;
 	private File outputDirectory;
 	private Set<File> auxClassPath;
-	private File RulesFile;
+	private File rulesFile;
 	private ClassLookup lookup;
 
 	public Set<File> getScanClassPath() {
@@ -56,11 +56,11 @@ public class Configuration {
 	}
 
 	public File getRulesFile() {
-		return RulesFile;
+		return rulesFile;
 	}
 
-	public void setRulesFile(File rulesFile) {
-		RulesFile = rulesFile;
+	public void setRulesFile(File ruleFile) {
+		rulesFile = ruleFile;
 	}
 
 	public void initializeLookup() throws MalformedURLException {
