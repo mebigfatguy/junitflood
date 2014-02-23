@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.tree.ClassNode;
 
 import com.mebigfatguy.junitflood.Configuration;
 import com.mebigfatguy.junitflood.classpath.ClassPathItem;
@@ -43,14 +44,19 @@ public class SimpleGenerator implements JUnitGenerator {
 			ClassPathIterator iterator = new ClassPathIterator(configuration.getScanClassPath());
 			while (iterator.hasNext()) {
 				ClassPathItem item = iterator.next();
-				try (InputStream is = item.getInputStream()) {
-					ClassReader cr = new ClassReader(is);
-					SimpleClassVisitor scv = new SimpleClassVisitor(configuration);
-					cr.accept(scv, ClassReader.SKIP_DEBUG);
-				}
+				ClassNode node = parseClass(item);
 			}
 		} catch (IOException ioe) {
 			throw new GeneratorException("Failed generating unit tests", ioe);
 		}
+	}
+	
+	private ClassNode parseClass(ClassPathItem item) throws IOException {
+	    try (InputStream is = item.getInputStream()) {
+            ClassReader cr = new ClassReader(is);
+            ClassNode node = new ClassNode();
+            cr.accept(node, ClassReader.SKIP_CODE);
+            return node;
+        }
 	}
 }
