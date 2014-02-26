@@ -1,7 +1,7 @@
 /*
  * junitflood - An automatic junit test generator
- * Copyright 2011 MeBigFatGuy.com
- * Copyright 2011 Dave Brosius
+ * Copyright 2011-2014 MeBigFatGuy.com
+ * Copyright 2011-2014 Dave Brosius
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
