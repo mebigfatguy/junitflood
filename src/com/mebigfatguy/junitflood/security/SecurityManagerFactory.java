@@ -245,6 +245,7 @@ public class SecurityManagerFactory extends SecurityManager {
 	}
 
 	@Override
+	@Deprecated
 	public boolean checkTopLevelWindow(Object window) {
 		if (delegatedSecurityManager != null) {
 			return delegatedSecurityManager.checkTopLevelWindow(window);
@@ -261,6 +262,7 @@ public class SecurityManagerFactory extends SecurityManager {
 	}
 
 	@Override
+	@Deprecated
 	public void checkSystemClipboardAccess() {
 		if (delegatedSecurityManager != null) {
 			delegatedSecurityManager.checkSystemClipboardAccess();
@@ -268,6 +270,7 @@ public class SecurityManagerFactory extends SecurityManager {
 	}
 
 	@Override
+	@Deprecated
 	public void checkAwtEventQueueAccess() {
 		if (delegatedSecurityManager != null) {
 			delegatedSecurityManager.checkAwtEventQueueAccess();
@@ -296,6 +299,7 @@ public class SecurityManagerFactory extends SecurityManager {
 	}
 
 	@Override
+	@Deprecated
 	public void checkMemberAccess(Class<?> clazz, int which) {
 		if (delegatedSecurityManager != null) {
 			delegatedSecurityManager.checkMemberAccess(clazz, which);

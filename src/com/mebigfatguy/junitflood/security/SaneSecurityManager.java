@@ -198,6 +198,7 @@ public class SaneSecurityManager extends SecurityManager {
 	}
 
 	@Override
+	@Deprecated
 	public void checkSystemClipboardAccess() {
 		super.checkSystemClipboardAccess();
 	}
