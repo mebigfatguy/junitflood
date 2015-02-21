@@ -40,6 +40,7 @@
         <pathelement location="${lib.dir}/asm-${asm.version}.jar"/>
         <pathelement location="${lib.dir}/asm-tree-${asm-tree.version}.jar"/>
 		<pathelement location="${lib.dir}/commons-cli-${commons-cli.version}.jar"/>
+		<pathelement location="${lib.dir}/commons-lang3-${commons-lang3.version}.jar"/>
 		<pathelement location="${lib.dir}/slf4j-api-${slf4j-api.version}.jar"/>
 		<pathelement location="${lib.dir}/slf4j-simple-${slf4j-simple.version}.jar"/>
 	</path>

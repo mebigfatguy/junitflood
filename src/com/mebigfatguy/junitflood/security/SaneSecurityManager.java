@@ -175,6 +175,7 @@ public class SaneSecurityManager extends SecurityManager {
 	}
 
 	@Override
+	@Deprecated
 	public void checkMulticast(InetAddress maddr, byte ttl) {
 		throw new SecurityException("Denying multicast from: " + maddr);
 	}
@@ -188,6 +189,7 @@ public class SaneSecurityManager extends SecurityManager {
 	}
 
 	@Override
+	@Deprecated
 	public boolean checkTopLevelWindow(Object window) {
 		return true;
 	}
@@ -204,6 +206,7 @@ public class SaneSecurityManager extends SecurityManager {
 	}
 
 	@Override
+	@Deprecated
 	public void checkAwtEventQueueAccess() {
 	}
 
@@ -220,6 +223,7 @@ public class SaneSecurityManager extends SecurityManager {
 	}
 
 	@Override
+	@Deprecated
 	public void checkMemberAccess(Class<?> clazz, int which) {
 	}
 
