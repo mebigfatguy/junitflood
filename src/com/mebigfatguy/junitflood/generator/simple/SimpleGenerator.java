@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -84,7 +84,7 @@ public class SimpleGenerator implements JUnitGenerator {
 	    
 	    f = new File(f, className + "Test.java");
 	    if (!f.exists()) {
-    	    try (PrintWriter pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f), "UTF-8")))) {
+    	    try (PrintWriter pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8)))) {
     	    
                 pw.println("package " + packageName.replaceAll("/", ".") + ";");
                 pw.println();
@@ -100,7 +100,6 @@ public class SimpleGenerator implements JUnitGenerator {
         	    }
                 
                 pw.println("}");
-    	    } catch (UnsupportedEncodingException e) {
     	    }
 	    }
 	}
