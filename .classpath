@@ -2,12 +2,12 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/commons-cli-1.2.jar" sourcepath="/home/dave/.m2/repository/commons-cli/commons-cli/1.2/commons-cli-1.2-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="lib/commons-lang3-3.2.1.jar"/>
-	<classpathentry kind="lib" path="lib/asm-5.0.4.jar"/>
-	<classpathentry kind="lib" path="lib/asm-tree-5.0.4.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-api-1.7.12.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-simple-1.7.12.jar"/>
+	<classpathentry kind="lib" path="lib/asm-5.2.jar"/>
+	<classpathentry kind="lib" path="lib/asm-tree-5.2.jar"/>
+	<classpathentry kind="lib" path="lib/commons-cli-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.6.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-simple-1.7.25.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
