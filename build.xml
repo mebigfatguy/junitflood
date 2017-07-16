@@ -119,7 +119,7 @@
 				 destdir="${javadoc.dir}"
 				 windowtitle="JUnitFlood api">
 		    <doctitle><![CDATA[<h1>JUnitFlood Javadoc</h1>]]></doctitle>
-		    <bottom><![CDATA[<i>Copyright &#169; 2011 MeBigFatGuy.com. All Rights Reserved.</i>]]></bottom>
+		    <bottom><![CDATA[<i>Copyright &#169; 2011-2017 MeBigFatGuy.com. All Rights Reserved.</i>]]></bottom>
 		</javadoc>
 	</target>
 
