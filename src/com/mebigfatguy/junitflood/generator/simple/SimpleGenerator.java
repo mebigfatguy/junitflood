@@ -17,14 +17,12 @@
  */
 package com.mebigfatguy.junitflood.generator.simple;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -41,77 +39,80 @@ import com.mebigfatguy.junitflood.generator.JUnitGenerator;
 
 public class SimpleGenerator implements JUnitGenerator {
 
-	Configuration configuration;
+    Configuration configuration;
 
-	@Override
-	public void setConfiguration(Configuration conf) {
-		configuration = conf;
-	}
+    @Override
+    public void setConfiguration(Configuration conf) {
+        configuration = conf;
+    }
 
-	@Override
-	public void generate() throws GeneratorException {
-		try {
-			ClassPathIterator iterator = new ClassPathIterator(configuration.getScanClassPath());
-			while (iterator.hasNext()) {
-				ClassPathItem item = iterator.next();
-				ClassNode node = parseClass(item);
-				
-				if (node.outerClass == null)
-				    generateUnitTest(node);
-			}
-		} catch (IOException ioe) {
-			throw new GeneratorException("Failed generating unit tests", ioe);
-		}
-	}
-	
-	private ClassNode parseClass(ClassPathItem item) throws IOException {
-	    try (InputStream is = item.getInputStream()) {
+    @Override
+    public void generate() throws GeneratorException {
+        try {
+            ClassPathIterator iterator = new ClassPathIterator(configuration.getScanClassPath());
+            while (iterator.hasNext()) {
+                ClassPathItem item = iterator.next();
+                ClassNode node = parseClass(item);
+
+                if (node.outerClass == null) {
+                    generateUnitTest(node);
+                }
+            }
+        } catch (IOException ioe) {
+            throw new GeneratorException("Failed generating unit tests", ioe);
+        }
+    }
+
+    private ClassNode parseClass(ClassPathItem item) throws IOException {
+        try (InputStream is = item.getInputStream()) {
             ClassReader cr = new ClassReader(is);
             ClassNode node = new ClassNode();
             cr.accept(node, ClassReader.SKIP_CODE);
             return node;
         }
-	}
-	
-	private void generateUnitTest(ClassNode classNode) throws IOException {
-	    String className = classNode.name;
-	    int lastSlashPos = className.lastIndexOf('/');
-	    String packageName = (lastSlashPos >= 0) ? className.substring(0, lastSlashPos) : "";
-	    className = (lastSlashPos > 0) ? className.substring(lastSlashPos+1) : className;
-	    
-	    File f = new File(configuration.getOutputDirectory(), packageName);
-	    f.mkdirs();
-	    
-	    f = new File(f, className + "Test.java");
-	    if (!f.exists()) {
-    	    try (PrintWriter pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8)))) {
-    	    
+    }
+
+    private void generateUnitTest(ClassNode classNode) throws IOException {
+        String className = classNode.name;
+        int lastSlashPos = className.lastIndexOf('/');
+        String packageName = (lastSlashPos >= 0) ? className.substring(0, lastSlashPos) : "";
+        className = (lastSlashPos > 0) ? className.substring(lastSlashPos + 1) : className;
+
+        File f = new File(configuration.getOutputDirectory(), packageName);
+        f.mkdirs();
+
+        f = new File(f, className + "Test.java");
+        if (!f.exists()) {
+            try (PrintWriter pw = new PrintWriter(Files.newBufferedWriter(f.toPath(), StandardCharsets.UTF_8))) {
+
                 pw.println("package " + packageName.replaceAll("/", ".") + ";");
                 pw.println();
                 pw.println("public class " + className + "Test {");
-                
+
                 for (MethodNode node : (List<MethodNode>) classNode.methods) {
-                    
+
                     if (isTestable(node)) {
                         pw.println("\t@Test");
                         pw.println("\tpublic void test" + StringUtils.capitalize(node.name) + "{} {");
                         pw.println("\t}");
                     }
-        	    }
-                
+                }
+
                 pw.println("}");
-    	    }
-	    }
-	}
-	
-	private boolean isTestable(MethodNode node) {
-	    
-	    if ((node.access & Opcodes.ACC_PUBLIC) == 0)
-	        return false;
-	    
-	    if (node.name.equals("<clinit>") || (node.name.equals("<init>")))
-	        return false;
-	    
-	    return true;
-	}
+            }
+        }
+    }
+
+    private boolean isTestable(MethodNode node) {
+
+        if ((node.access & Opcodes.ACC_PUBLIC) == 0) {
+            return false;
+        }
+
+        if (node.name.equals("<clinit>") || (node.name.equals("<init>"))) {
+            return false;
+        }
+
+        return true;
+    }
 }
