@@ -1,10 +1,10 @@
 <Project projectName="JUnitFlood">
   <Jar>././classes</Jar>
-  <AuxClasspathEntry>././lib/asm-5.0.4.jar</AuxClasspathEntry>
-  <AuxClasspathEntry>././lib/asm-tree-5.0.4.jar</AuxClasspathEntry>
-  <AuxClasspathEntry>././lib/commons-cli-1.2.jar</AuxClasspathEntry>
-  <AuxClasspathEntry>./lib/slf4j-api-1.7.5.jar</AuxClasspathEntry>
-  <AuxClasspathEntry>./lib/commons-lang3-3.2.1.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>././lib/asm-7.1.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>././lib/asm-tree-7.1.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>././lib/commons-cli-1.4.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>./lib/slf4j-api-1.7.26.jar</AuxClasspathEntry>
+  <AuxClasspathEntry>./lib/commons-lang3-3.9.jar</AuxClasspathEntry>
   <SrcDir>././src</SrcDir>
   <SuppressionFilter>
     <LastVersion value="-1" relOp="NEQ"/>
