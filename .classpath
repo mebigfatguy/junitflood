@@ -3,11 +3,11 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="lib/asm-7.1.jar"/>
+	<classpathentry kind="lib" path="lib/asm-tree-7.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-cli-1.4.jar"/>
-	<classpathentry kind="lib" path="lib/commons-lang3-3.6.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-api-1.7.25.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-simple-1.7.25.jar"/>
-	<classpathentry kind="lib" path="lib/asm-6.1.jar"/>
-	<classpathentry kind="lib" path="lib/asm-tree-6.1.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.9.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.7.26.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-simple-1.7.26.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
