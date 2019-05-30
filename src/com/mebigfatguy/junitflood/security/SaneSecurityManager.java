@@ -30,11 +30,6 @@ public class SaneSecurityManager extends SecurityManager {
 		SANE_PERMISSIONS.add("getProperty.package.access");
 	}
 
-	@Override
-	@Deprecated
-	public boolean getInCheck() {
-		return super.getInCheck();
-	}
 
 	@Override
 	protected Class<?>[] getClassContext() {
@@ -75,11 +70,6 @@ public class SaneSecurityManager extends SecurityManager {
 	@Deprecated
 	protected boolean inClassLoader() {
 		return super.inClassLoader();
-	}
-
-	@Override
-	public Object getSecurityContext() {
-		return super.getSecurityContext();
 	}
 
 	@Override

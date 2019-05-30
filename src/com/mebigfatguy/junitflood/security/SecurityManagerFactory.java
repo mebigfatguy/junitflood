@@ -38,12 +38,6 @@ public class SecurityManagerFactory extends SecurityManager {
 	}
 
 	@Override
-	@Deprecated
-	public boolean getInCheck() {
-		return super.getInCheck();
-	}
-
-	@Override
 	protected Class<?>[] getClassContext() {
 		return super.getClassContext();
 	}
@@ -82,11 +76,6 @@ public class SecurityManagerFactory extends SecurityManager {
 	@Deprecated
 	protected boolean inClassLoader() {
 		return super.inClassLoader();
-	}
-
-	@Override
-	public Object getSecurityContext() {
-		return super.getSecurityContext();
 	}
 
 	@Override
