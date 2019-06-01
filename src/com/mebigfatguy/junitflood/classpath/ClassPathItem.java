@@ -25,41 +25,49 @@ import java.io.InputStream;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import com.mebigfatguy.junitflood.streams.LengthLimitedInputStream;
 
 public class ClassPathItem {
 
-	private final boolean isJar;
-	private JarInputStream jarInputStream;
-	private JarEntry jarEntry;
-	private File directory;
-	private File clsName;
+    private final boolean isJar;
+    private JarInputStream jarInputStream;
+    private JarEntry jarEntry;
+    private File directory;
+    private File clsName;
 
-	public ClassPathItem(JarInputStream jis, JarEntry entry) {
-		jarInputStream = jis;
-		jarEntry = entry;
-		isJar = true;
-	}
+    public ClassPathItem(JarInputStream jis, JarEntry entry) {
+        jarInputStream = jis;
+        jarEntry = entry;
+        isJar = true;
+    }
 
-	public ClassPathItem(File dir, File cls) {
-		directory = dir;
-		clsName = cls;
-		isJar = false;
-	}
+    public ClassPathItem(File dir, File cls) {
+        directory = dir;
+        clsName = cls;
+        isJar = false;
+    }
 
-	public String getName() {
-		if (isJar) {
-			return jarEntry.getName();
-		} else {
-			return clsName.getPath().substring(directory.getPath().length());
-		}
-	}
+    public String getName() {
+        if (isJar) {
+            return jarEntry.getName();
+        } else {
+            return clsName.getPath().substring(directory.getPath().length());
+        }
+    }
 
-	public InputStream getInputStream() throws IOException {
-		if (isJar) {
-			return new LengthLimitedInputStream(jarInputStream, jarEntry.getSize());
-		} else {
-			return new BufferedInputStream(new FileInputStream(clsName));
-		}
-	}
+    public InputStream getInputStream() throws IOException {
+        if (isJar) {
+            return new LengthLimitedInputStream(jarInputStream, jarEntry.getSize());
+        } else {
+            return new BufferedInputStream(new FileInputStream(clsName));
+        }
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 }

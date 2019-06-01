@@ -22,54 +22,61 @@ import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import com.mebigfatguy.junitflood.classpath.ClassLookup;
 
 public class Configuration {
-	private Set<File> scanClassPath;
-	private File outputDirectory;
-	private Set<File> auxClassPath;
-	private File rulesFile;
-	private ClassLookup lookup;
+    private Set<File> scanClassPath;
+    private File outputDirectory;
+    private Set<File> auxClassPath;
+    private File rulesFile;
+    private ClassLookup lookup;
 
-	public Set<File> getScanClassPath() {
-		return scanClassPath;
-	}
+    public Set<File> getScanClassPath() {
+        return scanClassPath;
+    }
 
-	public void setScanClassPath(Set<File> scanClassPath) {
-		this.scanClassPath = Collections.<File>unmodifiableSet(scanClassPath);
-	}
+    public void setScanClassPath(Set<File> scanClassPath) {
+        this.scanClassPath = Collections.<File>unmodifiableSet(scanClassPath);
+    }
 
-	public File getOutputDirectory() {
-		return outputDirectory;
-	}
+    public File getOutputDirectory() {
+        return outputDirectory;
+    }
 
-	public void setOutputDirectory(File outputDirectory) {
-		this.outputDirectory = outputDirectory;
-	}
+    public void setOutputDirectory(File outputDirectory) {
+        this.outputDirectory = outputDirectory;
+    }
 
-	public Set<File> getAuxClassPath() {
-		return auxClassPath;
-	}
+    public Set<File> getAuxClassPath() {
+        return auxClassPath;
+    }
 
-	public void setAuxClassPath(Set<File> auxClassPath) {
-		this.auxClassPath = Collections.<File>unmodifiableSet(auxClassPath);
-	}
+    public void setAuxClassPath(Set<File> auxClassPath) {
+        this.auxClassPath = Collections.<File>unmodifiableSet(auxClassPath);
+    }
 
-	public File getRulesFile() {
-		return rulesFile;
-	}
+    public File getRulesFile() {
+        return rulesFile;
+    }
 
-	public void setRulesFile(File ruleFile) {
-		rulesFile = ruleFile;
-	}
+    public void setRulesFile(File ruleFile) {
+        rulesFile = ruleFile;
+    }
 
-	public void initializeLookup() throws MalformedURLException {
-		lookup = new ClassLookup(this);
-	}
+    public void initializeLookup() throws MalformedURLException {
+        lookup = new ClassLookup(this);
+    }
 
-	public ClassLookup getRepository() {
-		return lookup;
-	}
+    public ClassLookup getRepository() {
+        return lookup;
+    }
 
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 
 }

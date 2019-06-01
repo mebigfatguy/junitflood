@@ -28,45 +28,53 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import com.mebigfatguy.junitflood.Configuration;
 
 public class ClassLookup {
 
-	private final ClassLoader classLoader;
-	private final Map<String, ClassDetails> classDetails = new HashMap<String, ClassDetails>();
-	private final URL[] urls;
+    private final ClassLoader classLoader;
+    private final Map<String, ClassDetails> classDetails = new HashMap<String, ClassDetails>();
+    private final URL[] urls;
 
-	public ClassLookup(Configuration config) throws MalformedURLException {
-		Set<File> roots = new HashSet<File>();
-		roots.addAll(config.getScanClassPath());
-		roots.addAll(config.getAuxClassPath());
+    public ClassLookup(Configuration config) throws MalformedURLException {
+        Set<File> roots = new HashSet<File>();
+        roots.addAll(config.getScanClassPath());
+        roots.addAll(config.getAuxClassPath());
 
-		urls = new URL[roots.size()];
+        urls = new URL[roots.size()];
 
-		int i = 0;
-		for (File root : roots) {
-			urls[i++] = new URL("file://" + root.getAbsolutePath());
-		}
+        int i = 0;
+        for (File root : roots) {
+            urls[i++] = new URL("file://" + root.getAbsolutePath());
+        }
 
-		classLoader = createClassLoader();
-	}
+        classLoader = createClassLoader();
+    }
 
-	public final ClassLoader createClassLoader() {
-		return AccessController.<URLClassLoader>doPrivileged(new PrivilegedAction<URLClassLoader>() {
-			@Override
-			public URLClassLoader run() {
-				return new URLClassLoader(urls);
-			}
-		});
-	}
+    public final ClassLoader createClassLoader() {
+        return AccessController.<URLClassLoader>doPrivileged(new PrivilegedAction<URLClassLoader>() {
+            @Override
+            public URLClassLoader run() {
+                return new URLClassLoader(urls);
+            }
+        });
+    }
 
-	public Set<String> getConstructors(String clsName, String fromClass) {
-		ClassDetails classInfo = classDetails.get(clsName);
-		if (classInfo == null) {
-			classInfo = new ClassDetails(classLoader, clsName);
-			classDetails.put(clsName, classInfo);
-		}
+    public Set<String> getConstructors(String clsName, String fromClass) {
+        ClassDetails classInfo = classDetails.get(clsName);
+        if (classInfo == null) {
+            classInfo = new ClassDetails(classLoader, clsName);
+            classDetails.put(clsName, classInfo);
+        }
 
-		return classInfo.getConstructors(fromClass);
-	}
+        return classInfo.getConstructors(fromClass);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 }

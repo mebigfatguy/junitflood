@@ -24,45 +24,53 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class StatementList implements Iterable<Statement> {
 
-	private final List<Statement> statements = new ArrayList<Statement>();
-	private final Set<String> neededPackages = new TreeSet<String>();
+    private final List<Statement> statements = new ArrayList<Statement>();
+    private final Set<String> neededPackages = new TreeSet<String>();
 
-	@Override
-	public Iterator<Statement> iterator() {
-		return statements.iterator();
-	}
+    @Override
+    public Iterator<Statement> iterator() {
+        return statements.iterator();
+    }
 
-	public void clear() {
-		statements.clear();
-	}
+    public void clear() {
+        statements.clear();
+    }
 
-	public String addConstructor(String clsName, Object... args) {
-		neededPackages.add(getPackageName(clsName));
+    public String addConstructor(String clsName, Object... args) {
+        neededPackages.add(getPackageName(clsName));
 
-		Statement statement = Statement.createConstructor(clsName, args);
-		statements.add(statement);
-		return statement.getObjectName();
-	}
+        Statement statement = Statement.createConstructor(clsName, args);
+        statements.add(statement);
+        return statement.getObjectName();
+    }
 
-	public String addMethodCall(String objectName, String methodName, Object... args) {
-		Statement statement = Statement.createMethodCall(objectName, methodName, args);
-		statements.add(statement);
-		return objectName;
-	}
+    public String addMethodCall(String objectName, String methodName, Object... args) {
+        Statement statement = Statement.createMethodCall(objectName, methodName, args);
+        statements.add(statement);
+        return objectName;
+    }
 
-	public Set<String> getNeededPackages() {
-		neededPackages.remove(null);
-		return Collections.<String>unmodifiableSet(neededPackages);
-	}
+    public Set<String> getNeededPackages() {
+        neededPackages.remove(null);
+        return Collections.<String>unmodifiableSet(neededPackages);
+    }
 
-	private String getPackageName(String clsName) {
-		int slashPos = clsName.lastIndexOf('/');
-		if (slashPos >= 0) {
-			return clsName.substring(0, slashPos).replaceAll("/", ".");
-		}
+    private String getPackageName(String clsName) {
+        int slashPos = clsName.lastIndexOf('/');
+        if (slashPos >= 0) {
+            return clsName.substring(0, slashPos).replaceAll("/", ".");
+        }
 
-		return null;
-	}
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 }

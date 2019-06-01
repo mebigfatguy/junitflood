@@ -17,20 +17,28 @@
  */
 package com.mebigfatguy.junitflood.expectations;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class MethodReturnExpectation implements Expectation {
-	private final String methodName;
-	private final Object methodReturn;
+    private final String methodName;
+    private final Object methodReturn;
 
-	public MethodReturnExpectation(String method, Object returnVal) {
-		methodName = method;
-		methodReturn = returnVal;
-	}
+    public MethodReturnExpectation(String method, Object returnVal) {
+        methodName = method;
+        methodReturn = returnVal;
+    }
 
-	public String getMethodName() {
-		return methodName;
-	}
+    public String getMethodName() {
+        return methodName;
+    }
 
-	public Object getMethodReturn() {
-		return methodReturn;
-	}
+    public Object getMethodReturn() {
+        return methodReturn;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 }

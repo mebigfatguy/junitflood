@@ -21,14 +21,17 @@ import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class LengthLimitedInputStream extends FilterInputStream {
 
-	private long streamLength;
+    private long streamLength;
 
-	public LengthLimitedInputStream(InputStream src, long length) {
-		super(src);
-		streamLength = length;
-	}
+    public LengthLimitedInputStream(InputStream src, long length) {
+        super(src);
+        streamLength = length;
+    }
 
     @Override
     public int read() throws IOException {
@@ -53,7 +56,7 @@ public class LengthLimitedInputStream extends FilterInputStream {
         }
 
         if (len > streamLength) {
-            len = (int)streamLength;
+            len = (int) streamLength;
         }
 
         int bytes = super.read(b, off, len);
@@ -77,7 +80,7 @@ public class LengthLimitedInputStream extends FilterInputStream {
     public int available() throws IOException {
         int bytes = super.available();
         if (bytes > streamLength) {
-            bytes = (int)streamLength;
+            bytes = (int) streamLength;
         }
 
         return bytes;
@@ -85,18 +88,21 @@ public class LengthLimitedInputStream extends FilterInputStream {
 
     @Override
     public synchronized void mark(int readlimit) {
-    	throw new UnsupportedOperationException("mark not supported");
+        throw new UnsupportedOperationException("mark not supported");
     }
 
     @Override
-    public synchronized void reset() throws IOException
-    {
+    public synchronized void reset() throws IOException {
         throw new UnsupportedOperationException("reset not supported");
     }
 
     @Override
-    public boolean markSupported()
-    {
+    public boolean markSupported() {
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

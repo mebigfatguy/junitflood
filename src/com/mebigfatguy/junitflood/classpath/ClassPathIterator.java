@@ -21,55 +21,63 @@ import java.io.File;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class ClassPathIterator implements Iterator<ClassPathItem> {
 
-	private final Iterator<File> pathIterator;
-	private File currentFile;
-	private Iterator<ClassPathItem> subIterator;
+    private final Iterator<File> pathIterator;
+    private File currentFile;
+    private Iterator<ClassPathItem> subIterator;
 
-	public ClassPathIterator(Set<File> cp) {
-		pathIterator = cp.iterator();
-		currentFile = null;
-		subIterator = null;
-	}
+    public ClassPathIterator(Set<File> cp) {
+        pathIterator = cp.iterator();
+        currentFile = null;
+        subIterator = null;
+    }
 
-	@Override
-	public boolean hasNext() {
-		while (currentFile == null) {
-			if (subIterator == null) {
-				if (!pathIterator.hasNext()) {
-					return false;
-				}
+    @Override
+    public boolean hasNext() {
+        while (currentFile == null) {
+            if (subIterator == null) {
+                if (!pathIterator.hasNext()) {
+                    return false;
+                }
 
-				currentFile = pathIterator.next();
+                currentFile = pathIterator.next();
 
-				if (currentFile.isDirectory()) {
-					subIterator = new DirectoryIterator(currentFile);
-				} else {
-					subIterator = new JarIterator(currentFile);
-				}
-			}
+                if (currentFile.isDirectory()) {
+                    subIterator = new DirectoryIterator(currentFile);
+                } else {
+                    subIterator = new JarIterator(currentFile);
+                }
+            }
 
-			currentFile = null;
+            currentFile = null;
 
-			if (subIterator.hasNext()) {
-				return true;
-			}
+            if (subIterator.hasNext()) {
+                return true;
+            }
 
-			subIterator = null;
+            subIterator = null;
 
-		}
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	@Override
-	public ClassPathItem next() {
-		return subIterator.next();
-	}
+    @Override
+    public ClassPathItem next() {
+        return subIterator.next();
+    }
 
-	@Override
-	public void remove() {
-		throw new UnsupportedOperationException("remove not supported");
-	}
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException("remove not supported");
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 }

@@ -23,9 +23,10 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
@@ -75,8 +76,8 @@ public class SimpleGenerator implements JUnitGenerator {
     private void generateUnitTest(ClassNode classNode) throws IOException {
         String className = classNode.name;
         int lastSlashPos = className.lastIndexOf('/');
-        String packageName = (lastSlashPos >= 0) ? className.substring(0, lastSlashPos) : "";
-        className = (lastSlashPos > 0) ? className.substring(lastSlashPos + 1) : className;
+        String packageName = lastSlashPos >= 0 ? className.substring(0, lastSlashPos) : "";
+        className = lastSlashPos > 0 ? className.substring(lastSlashPos + 1) : className;
 
         File f = new File(configuration.getOutputDirectory(), packageName);
         f.mkdirs();
@@ -89,7 +90,7 @@ public class SimpleGenerator implements JUnitGenerator {
                 pw.println();
                 pw.println("public class " + className + "Test {");
 
-                for (MethodNode node : (List<MethodNode>) classNode.methods) {
+                for (MethodNode node : classNode.methods) {
 
                     if (isTestable(node)) {
                         pw.println("\t@Test");
@@ -109,10 +110,15 @@ public class SimpleGenerator implements JUnitGenerator {
             return false;
         }
 
-        if (node.name.equals("<clinit>") || (node.name.equals("<init>"))) {
+        if (node.name.equals("<clinit>") || node.name.equals("<init>")) {
             return false;
         }
 
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

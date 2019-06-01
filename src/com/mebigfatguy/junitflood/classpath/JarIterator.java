@@ -26,62 +26,69 @@ import java.util.NoSuchElementException;
 import java.util.jar.JarEntry;
 import java.util.jar.JarInputStream;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import com.mebigfatguy.junitflood.util.Closer;
 
 public class JarIterator implements Iterator<ClassPathItem> {
-	private final File jarFile;
-	private JarInputStream jarInputStream;
-	private JarEntry jarEntry;
+    private final File jarFile;
+    private JarInputStream jarInputStream;
+    private JarEntry jarEntry;
 
-	public JarIterator(File jar) {
-		jarFile = jar;
-		try {
-			jarInputStream = new JarInputStream(new BufferedInputStream(new FileInputStream(jar)));
-		} catch (IOException ioe) {
-			jarInputStream = null;
-			jarEntry = null;
-		}
-	}
+    public JarIterator(File jar) {
+        jarFile = jar;
+        try {
+            jarInputStream = new JarInputStream(new BufferedInputStream(new FileInputStream(jar)));
+        } catch (IOException ioe) {
+            jarInputStream = null;
+            jarEntry = null;
+        }
+    }
 
-	@Override
-	public boolean hasNext() {
-		if (jarInputStream == null) {
-			return false;
-		}
+    @Override
+    public boolean hasNext() {
+        if (jarInputStream == null) {
+            return false;
+        }
 
-		if (jarEntry != null) {
-			return true;
-		}
+        if (jarEntry != null) {
+            return true;
+        }
 
-		try {
-			jarEntry = jarInputStream.getNextJarEntry();
-			return true;
-		} catch (IOException ioe) {
-			Closer.closeQuietly(jarInputStream);
-			jarInputStream = null;
-			jarEntry = null;
-			return false;
-		}
-	}
+        try {
+            jarEntry = jarInputStream.getNextJarEntry();
+            return true;
+        } catch (IOException ioe) {
+            Closer.closeQuietly(jarInputStream);
+            jarInputStream = null;
+            jarEntry = null;
+            return false;
+        }
+    }
 
-	@Override
-	public ClassPathItem next() {
-		hasNext();
+    @Override
+    public ClassPathItem next() {
+        hasNext();
 
-		if (jarInputStream != null) {
-			if (jarEntry != null) {
-				ClassPathItem item = new ClassPathItem(jarInputStream, jarEntry);
-				jarEntry = null;
-				return item;
-			}
-		}
+        if (jarInputStream != null) {
+            if (jarEntry != null) {
+                ClassPathItem item = new ClassPathItem(jarInputStream, jarEntry);
+                jarEntry = null;
+                return item;
+            }
+        }
 
-		throw new NoSuchElementException("No more elements in " + jarFile);
-	}
+        throw new NoSuchElementException("No more elements in " + jarFile);
+    }
 
-	@Override
-	public void remove() {
-		throw new UnsupportedOperationException("JarIterator doesn't support remove");
-	}
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException("JarIterator doesn't support remove");
+    }
 
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 }

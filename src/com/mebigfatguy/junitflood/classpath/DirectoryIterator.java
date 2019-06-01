@@ -25,57 +25,65 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class DirectoryIterator implements Iterator<ClassPathItem> {
 
-	private final File directory;
-	private final List<File> directories;
+    private final File directory;
+    private final List<File> directories;
 
-	public DirectoryIterator(File dir) {
-		directory = dir;
-		directories = new ArrayList<File>();
+    public DirectoryIterator(File dir) {
+        directory = dir;
+        directories = new ArrayList<File>();
 
-		File[] items = dir.listFiles(new ClassFileFilter());
-		directories.addAll(Arrays.asList(items));
-	}
+        File[] items = dir.listFiles(new ClassFileFilter());
+        directories.addAll(Arrays.asList(items));
+    }
 
-	@Override
-	public boolean hasNext() {
-		return !directories.isEmpty();
-	}
+    @Override
+    public boolean hasNext() {
+        return !directories.isEmpty();
+    }
 
-	@Override
-	public ClassPathItem next() {
-		if (directories.isEmpty()) {
-			throw new NoSuchElementException();
-		}
+    @Override
+    public ClassPathItem next() {
+        if (directories.isEmpty()) {
+            throw new NoSuchElementException();
+        }
 
-		File f = directories.remove(0);
-		while (f.isDirectory()) {
-			File[] items = f.listFiles(new ClassFileFilter());
-			directories.addAll(Arrays.asList(items));
-			if (directories.isEmpty()) {
-				throw new NoSuchElementException("No more elements in " + directory);
-			}
-			f = directories.remove(0);
-		}
+        File f = directories.remove(0);
+        while (f.isDirectory()) {
+            File[] items = f.listFiles(new ClassFileFilter());
+            directories.addAll(Arrays.asList(items));
+            if (directories.isEmpty()) {
+                throw new NoSuchElementException("No more elements in " + directory);
+            }
+            f = directories.remove(0);
+        }
 
-		if (!f.isFile()) {
-			throw new NoSuchElementException("No more elements in " + directory);
-		}
+        if (!f.isFile()) {
+            throw new NoSuchElementException("No more elements in " + directory);
+        }
 
-		return new ClassPathItem(directory, f);
-	}
+        return new ClassPathItem(directory, f);
+    }
 
-	@Override
-	public void remove() {
-		throw new UnsupportedOperationException("JarIterator doesn't support remove");
-	}
+    @Override
+    public void remove() {
+        throw new UnsupportedOperationException("JarIterator doesn't support remove");
+    }
 
-	private static class ClassFileFilter implements FileFilter {
+    private static class ClassFileFilter implements FileFilter {
 
-		@Override
-		public boolean accept(File f) {
-			return f.isDirectory() || f.getPath().endsWith(".class");
-		}
-	}
+        @Override
+        public boolean accept(File f) {
+            return f.isDirectory() || f.getPath().endsWith(".class");
+        }
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 }

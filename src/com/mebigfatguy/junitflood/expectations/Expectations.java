@@ -22,22 +22,30 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 public class Expectations {
 
-	public Map<String, Set<Expectation>> expectations = new HashMap<String, Set<Expectation>>();
+    public Map<String, Set<Expectation>> expectations = new HashMap<String, Set<Expectation>>();
 
-	public void addExpectation(int register, Expectation expectation) {
-		String reg = String.valueOf(register);
-		addExpectation(reg, expectation);
-	}
+    public void addExpectation(int register, Expectation expectation) {
+        String reg = String.valueOf(register);
+        addExpectation(reg, expectation);
+    }
 
-	public void addExpectation(String field, Expectation expectation) {
-		Set<Expectation> fieldExpectations = expectations.get(field);
-		if (fieldExpectations == null) {
-			fieldExpectations = new HashSet<Expectation>();
-			expectations.put(field, fieldExpectations);
-		}
+    public void addExpectation(String field, Expectation expectation) {
+        Set<Expectation> fieldExpectations = expectations.get(field);
+        if (fieldExpectations == null) {
+            fieldExpectations = new HashSet<Expectation>();
+            expectations.put(field, fieldExpectations);
+        }
 
-		fieldExpectations.add(expectation);
-	}
+        fieldExpectations.add(expectation);
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 }

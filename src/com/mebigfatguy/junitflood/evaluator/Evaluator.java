@@ -21,6 +21,9 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.Set;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import com.mebigfatguy.junitflood.Configuration;
 import com.mebigfatguy.junitflood.generator.StatementList;
 import com.mebigfatguy.junitflood.security.SaneSecurityManager;
@@ -28,49 +31,54 @@ import com.mebigfatguy.junitflood.security.SecurityManagerFactory;
 import com.mebigfatguy.junitflood.util.SignatureUtils;
 
 public class Evaluator {
-	private final Configuration configuration;
-	private final ClassLoader classLoader;
+    private final Configuration configuration;
+    private final ClassLoader classLoader;
 
-	public Evaluator(Configuration config) {
-		configuration = config;
-		classLoader = configuration.getRepository().createClassLoader();
+    public Evaluator(Configuration config) {
+        configuration = config;
+        classLoader = configuration.getRepository().createClassLoader();
 
-	}
+    }
 
-	public StatementList attemptExecution(String clsName, String methodName, String signature) {
-		try {
-			StatementList statementList = new StatementList();
+    public StatementList attemptExecution(String clsName, String methodName, String signature) {
+        try {
+            StatementList statementList = new StatementList();
 
-			Set<String> constructorSignatures = configuration.getRepository().getConstructors(clsName, clsName);
-			SecurityManagerFactory.setSecurityManager(new SaneSecurityManager());
+            Set<String> constructorSignatures = configuration.getRepository().getConstructors(clsName, clsName);
+            SecurityManagerFactory.setSecurityManager(new SaneSecurityManager());
 
-			Class<?> cls = classLoader.loadClass(clsName.replaceAll("/", "."));
+            Class<?> cls = classLoader.loadClass(clsName.replaceAll("/", "."));
 
-			for (String constructorSignature : constructorSignatures) {
-				try {
-					Constructor<?> cons = cls.getDeclaredConstructor(SignatureUtils.convertMethodParameterSignaturesToClassArray(classLoader, constructorSignature));
-					Object[] args = SignatureUtils.createDefaultArgsForSignature(constructorSignature);
-					Object o = cons.newInstance(args);
+            for (String constructorSignature : constructorSignatures) {
+                try {
+                    Constructor<?> cons = cls.getDeclaredConstructor(SignatureUtils.convertMethodParameterSignaturesToClassArray(classLoader, constructorSignature));
+                    Object[] args = SignatureUtils.createDefaultArgsForSignature(constructorSignature);
+                    Object o = cons.newInstance(args);
 
-					String objectName = statementList.addConstructor(clsName, args);
+                    String objectName = statementList.addConstructor(clsName, args);
 
-					Method m = cls.getMethod(methodName, SignatureUtils.convertMethodParameterSignaturesToClassArray(classLoader, signature));
-					args = SignatureUtils.createDefaultArgsForSignature(constructorSignature);
-					m.invoke(o, args);
+                    Method m = cls.getMethod(methodName, SignatureUtils.convertMethodParameterSignaturesToClassArray(classLoader, signature));
+                    args = SignatureUtils.createDefaultArgsForSignature(constructorSignature);
+                    m.invoke(o, args);
 
-					statementList.addMethodCall(objectName, methodName, args);
+                    statementList.addMethodCall(objectName, methodName, args);
 
-					return statementList;
-				} catch (Exception e) {
-					statementList.clear();
-				}
-			}
+                    return statementList;
+                } catch (Exception e) {
+                    statementList.clear();
+                }
+            }
 
-			return null;
-		} catch (Exception e) {
-			return null;
-		} finally {
-			SecurityManagerFactory.setSecurityManager(null);
-		}
-	}
+            return null;
+        } catch (Exception e) {
+            return null;
+        } finally {
+            SecurityManagerFactory.setSecurityManager(null);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    }
 }
